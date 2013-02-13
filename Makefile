@@ -1,2 +1,2 @@
 all:
-	echo "toto"
+	echo "titi"
