@@ -1,2 +1,2 @@
 all:
-	echo "titi"
+	echo "Hello!"
