@@ -1,2 +1,2 @@
 all:
-	echo "Hello2!"
+	echo "Hello world!"
