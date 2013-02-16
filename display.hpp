@@ -7,17 +7,25 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
+#include <vector>
+
+#include "cylinder.hpp"
+
 class Display
 {
 public:
-  Display();
+  Display(std::vector<Cylinder*>* cylinderList);
   ~Display();
   bool step();
 
 private:
+  SDL_Surface * _scaleSurface(SDL_Surface *Surface, int width, int height);
+
+private:
   SDL_Surface* _screen;
-  SDL_Surface* _cylinderSurf;
-  SDL_Rect _cylinderPos;
+  std::vector<Cylinder*>* _cylinderList;
+
+  std::vector<SDL_Surface*> _cylinderColorList;
 };
 
 #endif // !DISPLAY_HPP

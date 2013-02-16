@@ -1,7 +1,7 @@
 #ifndef SIMULATOR_HPP
 # define SIMULATOR_HPP
 
-# include <list>
+# include <vector>
 
 # include "robot.hpp"
 # include "display.hpp"
@@ -17,10 +17,9 @@ public:
   void step();
 
 private:
-  Display _display;
+  Display* _display;
   Robot _robot;
-  std::list<Cylinder*> _cylinderList;
-
+  std::vector<Cylinder*>*  _cylinderList;
   bool _continue;
   int _nbIter;
 };
