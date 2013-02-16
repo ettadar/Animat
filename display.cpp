@@ -1,5 +1,7 @@
 #include "display.hpp"
 
+#include "robot.hpp"
+
 Uint32 getpixel(SDL_Surface *surface, int x, int y)
 {
     int bpp = surface->format->BytesPerPixel;
@@ -66,7 +68,8 @@ void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 
 Display::Display(std::vector<Cylinder*>* cylinderList):
   _screen(NULL),
-  _cylinderList(cylinderList)
+  _cylinderList(cylinderList),
+  _cylinderToDraw(std::vector<SDL_Surface*>())
 {
   SDL_Init(SDL_INIT_VIDEO);
   SDL_WM_SetCaption("Animat", NULL);
@@ -81,20 +84,20 @@ Display::Display(std::vector<Cylinder*>* cylinderList):
 
   for (int i = 0; i < cylinderList->size(); i++)
   {
-    SDL_Rect cylinderPos;
-    cylinderPos.x = cylinderList->at(i)->x - cylinderList->at(i)->r;
-    cylinderPos.y = cylinderList->at(i)->y - cylinderList->at(i)->r;
     SDL_Surface* scaledSurf =
       _scaleSurface(_cylinderColorList[cylinderList->at(i)->color],
 		    cylinderList->at(i)->r * 2,
 		    cylinderList->at(i)->r * 2);
-    SDL_BlitSurface(scaledSurf, NULL, _screen, &cylinderPos);
-    delete scaledSurf;
+    _cylinderToDraw.push_back(scaledSurf);
   }
+
+  _robot = _scaleSurface(IMG_Load("Images/Bee.jpg"),
+			 ROBOT_SIZE, ROBOT_SIZE);
 }
 
 Display::~Display()
 {
+  _cylinderToDraw.clear();
   SDL_Quit();
 }
 
@@ -106,36 +109,41 @@ bool Display::step()
   {
   case SDL_QUIT:
     return false;
-    // case SDL_KEYDOWN:
-    //   switch(event.key.keysym.sym){
-    //     case SDLK_LEFT:
-    // 	  body->applyCentralForce(btVector3(-10,0,0));
-    //       break;
-    //     case SDLK_RIGHT:
-    // 	  body->applyCentralForce(btVector3(10,0,0));
-    //       break;
-    //     case SDLK_UP:
-    // 	  body->applyCentralForce(btVector3(0,0,-10));
-    //       break;
-    //     case SDLK_DOWN:
-    // 	  body->applyCentralForce(btVector3(0,0,10));
-    //       break;
-    //     default:
-    //       break;
-    //   }
   }
+
+  // Clear screen
+  SDL_FillRect(_screen, NULL, SDL_MapRGB(_screen->format, 255, 255, 255));
+
+  // Draw cylinders
+  for (int i = 0; i < _cylinderToDraw.size(); i++)
+  {
+    SDL_Rect cylinderPos;
+    cylinderPos.x = _cylinderList->at(i)->x - _cylinderList->at(i)->r;
+    cylinderPos.y = _cylinderList->at(i)->y - _cylinderList->at(i)->r;
+    SDL_BlitSurface(_cylinderToDraw[i], NULL, _screen, &cylinderPos);
+  }
+
+  // Draw robot
+  SDL_BlitSurface(_robot, NULL, _screen, &_robotPos);
 
   SDL_Flip(_screen);
 
   return true;
 }
 
+void Display::setRobotPos(float x, float y)
+{
+  _robotPos.x = x - ROBOT_SIZE / 2;
+  _robotPos.y = y - ROBOT_SIZE / 2;
+}
+
+
 SDL_Surface *Display::_scaleSurface(SDL_Surface *surface, int width, int height)
 {
     if(!surface || !width || !height)
         return 0;
      
-    SDL_Surface *_ret = SDL_CreateRGBSurface(surface->flags, width, height,
+    SDL_Surface *ret = SDL_CreateRGBSurface(surface->flags, width, height,
 					     surface->format->BitsPerPixel,
 					     surface->format->Rmask,
 					     surface->format->Gmask,
@@ -151,10 +159,10 @@ SDL_Surface *Display::_scaleSurface(SDL_Surface *surface, int width, int height)
         for(int x = 0; x < surface->w; x++)
             for(int o_y = 0; o_y < _stretch_factor_y; ++o_y)
                 for(int o_x = 0; o_x < _stretch_factor_x; ++o_x)
-                    putpixel(_ret,
+                    putpixel(ret,
 			     static_cast<Sint32>(_stretch_factor_x * x) + o_x, 
 			     static_cast<Sint32>(_stretch_factor_y * y) + o_y,
 			     getpixel(surface, x, y));
  
-    return _ret;
+    return ret;
 }
