@@ -23,7 +23,7 @@ private:
   float _robotPosX;
   float _robotPosY;
 
-  std::vector<Cylinder*>*  _cylinderList;
+  std::vector<Cylinder*>* _cylinderList;
   bool _continue;
   int _nbIter;
 };
