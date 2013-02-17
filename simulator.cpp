@@ -35,7 +35,7 @@ void Simulator::run()
 {
   while (_continue)
   {
-    usleep(1000);
+    //usleep(1000);
     step();
   }
 }
