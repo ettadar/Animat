@@ -17,6 +17,9 @@ public:
   void step();
 
 private:
+  Image* _getImage(float posX, float posY);
+
+private:
   Display* _display;
   Robot _robot;
 

@@ -6,6 +6,8 @@
 #define VIEW_ANGLE 220
 #define ROBOT_SIZE 40
 
+typedef std::vector<int> Image;
+
 class Robot
 {
 public:

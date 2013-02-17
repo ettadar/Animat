@@ -13,6 +13,8 @@ Simulator::Simulator() :
   _continue(true),
   _nbIter(0)
 {
+  // TODO : remove
+  _getImage(0, 0);
   _cylinderList = new std::vector<Cylinder*>();
   
   _cylinderList->push_back(new Cylinder(100, 100, BLACK, 20));
@@ -48,4 +50,16 @@ void Simulator::step()
 
   _display->setRobotPos(_robotPosX, _robotPosY);
   _continue = _display->step();
+}
+
+Image* Simulator::_getImage(float posX, float posY)
+{
+  // Image* img = new Image();
+  // for (int iPixel = 0; iPixel < IMAGE_SIZE; ++iPixel)
+  // {
+  //   float anglePixel = (iPixel - IMAGE_SIZE / 2) * (360 / VIEW_ANGLE);
+  //   std::cout << anglePixel;
+  //   float minDist;
+  //   float iMinDist;
+  // }
 }
