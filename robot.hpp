@@ -21,8 +21,7 @@ public:
   float getMoveX();
   float getMoveY();
 
-private:
-	Landscape* _imageToLandscape(Image* img);
+
 
 private:
   float _moveX;

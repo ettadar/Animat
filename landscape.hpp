@@ -1,7 +1,8 @@
 #ifndef LANDSCAPE_HPP
 # define LANDSCAPE_HPP
 
-#include <list>
+#include <vector>
+#include <iostream>
 
 struct LandscapeElem
 {
@@ -19,6 +20,10 @@ struct LandscapeElem
 	float lum;
 };
 
-typedef std::list<LandscapeElem*> Landscape;
+typedef std::vector<LandscapeElem*> Landscape;
+
+//friend ostream& operator<< (ostream&, LandscapeElem elem);
+
+
 
 #endif // !LANDSCAPE_HPP

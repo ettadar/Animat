@@ -29,3 +29,6 @@ float Robot::getMoveY()
 {
 	return _moveY;
 }
+
+
+
