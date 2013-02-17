@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "landscape.hpp"
+
 #define VIEW_ANGLE 220
 #define ROBOT_SIZE 40
 
@@ -18,6 +20,8 @@ public:
   float getMoveX();
   float getMoveY();
 
+private:
+	Landscape* _imageToLandscape(Image* img);
 
 private:
   float _moveX;
