@@ -33,7 +33,8 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 			do{
 				fin++;
 			}while(fin < img->size() && img->at(fin) != 0 );
-			LandscapeElem* object = new LandscapeElem(false,((debut+fin-1)/2));
+			std::cout<<" fin = "<< fin <<std::endl;
+			LandscapeElem* object = new LandscapeElem(false,((debut+fin-1)/2), ((float)(fin - debut) / 360) * 2 * PI);
 			land->push_back(object);
 			debut=fin;
 		}//fin debut !=0
@@ -43,7 +44,8 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 			do{
 				fin++;
 			}while(fin < img->size() && img->at(fin) == 0 );
-			LandscapeElem* object = new LandscapeElem(true,((debut+fin-1)/2));
+			std::cout<<" fin = "<< fin <<std::endl;
+			LandscapeElem* object = new LandscapeElem(true,((debut+fin-1)/2),((float)(fin - debut) / 360) * 2 * PI);
 			land->push_back(object);
 			debut=fin;
 		}//fin if ==0
@@ -54,7 +56,7 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 
 std::ostream & operator<< (std::ostream &o, LandscapeElem& elem)
 {
-	o << " objet "<< elem.gap << " centre " << elem.angle << " angle " << ((elem.angle - (VIEW_ANGLE / 2)) / 360 ) * 2 * 3.141592653589 ;
+	o << " objet "<< elem.gap << " centre " << elem.angle << " angle " << ((elem.angle - (VIEW_ANGLE / 2)) / 360 ) * 2 * PI << " taille de l'objet " << elem.size;
 	return o;
 }
 

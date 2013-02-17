@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <cfloat>
 
+#include "model.hpp"
+
 Simulator::Simulator() :
   _display(NULL),
   _robotPosX(0),
@@ -26,6 +28,9 @@ Simulator::Simulator() :
   _display->setRobotView(_getImage(50, 100));
 
   _display->setRobotPos(20, 20);
+  
+  //ccmodel
+  CCmodel* model = new CCmodel(_getImage(50, 100));
 }
 
 Simulator::~Simulator()

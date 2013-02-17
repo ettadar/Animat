@@ -23,4 +23,8 @@ protected:
 	float _y;
 
 };
+
+#include "ccmodel.hpp"
+
 #endif // !MODEL_HPP
+
