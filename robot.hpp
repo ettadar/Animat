@@ -7,6 +7,7 @@
 
 #define VIEW_ANGLE 220
 #define ROBOT_SIZE 40
+#define PI 3.141592653589
 
 typedef std::vector<int> Image;
 
