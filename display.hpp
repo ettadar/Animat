@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "cylinder.hpp"
+#include "robot.hpp"
 
 class Display
 {
@@ -15,9 +16,7 @@ public:
   ~Display();
   bool step();
   void setRobotPos(float x, float y);
-
-private:
-  SDL_Surface * _scaleSurface(SDL_Surface *Surface, int width, int height);
+  void setRobotView(Image* img);
 
 private:
   SDL_Surface* _screen;
@@ -29,6 +28,8 @@ private:
   std::vector<SDL_Surface*> _cylinderToDraw;
 
   std::vector<SDL_Surface*> _cylinderColorList;
+
+  Image* _robotView;
 };
 
 #endif // !DISPLAY_HPP

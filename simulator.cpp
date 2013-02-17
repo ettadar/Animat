@@ -21,9 +21,9 @@ Simulator::Simulator() :
   _cylinderList->push_back(new Cylinder(100, 100, RED, 20));
   _cylinderList->push_back(new Cylinder(140, 120, BLUE, 20));
 
-  _getImage(50, 100);
 
   _display = new Display(_cylinderList);
+  _display->setRobotView(_getImage(50, 100));
 
   _display->setRobotPos(20, 20);
 }

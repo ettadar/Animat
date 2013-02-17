@@ -92,3 +92,14 @@ SDL_Surface* scaleSurface(SDL_Surface *surface, int width, int height)
  
     return ret;
 }
+
+SDL_Surface* createSurface(int width,int height,const SDL_Surface* display)
+{
+  // 'display' is the surface whose format you want to match
+  //  if this is really the display format, then use the surface returned from SDL_SetVideoMode
+
+  const SDL_PixelFormat& fmt = *(display->format);
+  return SDL_CreateRGBSurface(SDL_HWSURFACE, width, height,
+    fmt.BitsPerPixel, fmt.Rmask, fmt.Gmask, fmt.Bmask,
+    fmt.Amask);
+}

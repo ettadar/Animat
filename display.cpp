@@ -6,7 +6,8 @@
 Display::Display(std::vector<Cylinder*>* cylinderList):
 _screen(NULL),
 _cylinderList(cylinderList),
-_cylinderToDraw(std::vector<SDL_Surface*>())
+_cylinderToDraw(std::vector<SDL_Surface*>()),
+_robotView(0)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetCaption("Animat", NULL);
@@ -63,6 +64,28 @@ bool Display::step()
 	// Draw robot
 	SDL_BlitSurface(_robot, NULL, _screen, &_robotPos);
 
+	// Draw robot view
+	if (_robotView != 0)
+	{
+		SDL_Rect pos;
+		pos.x = 0;
+		pos.y = 0;
+		SDL_Surface* surf = createSurface(VIEW_ANGLE + 1, 10, _screen);
+		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
+		{
+			for (int j = 0; j < 10; ++j)
+			{
+				if (_robotView->at(i) == BLACK)
+					putpixel(surf, i, j, 0x000000);
+				else if (_robotView->at(i) == RED)
+					putpixel(surf, i, j, 0xFF0000);
+				else if (_robotView->at(i) == BLUE)
+					putpixel(surf, i, j, 0x0000FF);
+			}
+		}
+		SDL_BlitSurface(surf, NULL, _screen, &pos);
+	}
+
 	SDL_Flip(_screen);
 
 	return true;
@@ -72,4 +95,9 @@ void Display::setRobotPos(float x, float y)
 {
 	_robotPos.x = x - ROBOT_SIZE / 2;
 	_robotPos.y = y - ROBOT_SIZE / 2;
+}
+
+void Display::setRobotView(Image* img)
+{
+	_robotView = img;
 }
