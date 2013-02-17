@@ -3,9 +3,12 @@
 
 # include <vector>
 
+# include "type.hpp"
 # include "robot.hpp"
 # include "display.hpp"
 # include "cylinder.hpp"
+# include "model.hpp"
+
 
 class Simulator
 {
@@ -21,7 +24,7 @@ private:
 
 private:
   Display* _display;
-  Robot _robot;
+  Robot* _robot;
 
   float _robotPosX;
   float _robotPosY;

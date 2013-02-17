@@ -6,37 +6,31 @@
 #include <unistd.h>
 #include <cfloat>
 
-#include "model.hpp"
-
 Simulator::Simulator() :
   _display(NULL),
-  _robotPosX(0),
-  _robotPosY(0),
-  _robot(Robot(std::vector<int>())),
+  _robotPosX(400),
+  _robotPosY(190),
   _cylinderList(NULL),
   _continue(true),
   _nbIter(0)
 {
-  // TODO : remove
   _cylinderList = new std::vector<Cylinder*>();
-  
-  _cylinderList->push_back(new Cylinder(100, 100, RED, 20));
-  _cylinderList->push_back(new Cylinder(140, 120, BLUE, 20));
+  _cylinderList->push_back(new Cylinder(400, 200, RED, 20));
+  _cylinderList->push_back(new Cylinder(300, 400, BLUE, 20));
 
+  CCmodel* mod = new CCmodel(_getImage(40, 320));
+  _robot = new Robot(mod);
 
   _display = new Display(_cylinderList);
-  _display->setRobotView(_getImage(50, 100));
-
-  _display->setRobotPos(20, 20);
-  
-  //ccmodel
-  CCmodel* model = new CCmodel(_getImage(50, 100));
+  _display->setRobotPos(_robotPosX, _robotPosY);
 }
 
 Simulator::~Simulator()
 {
   _cylinderList->clear();
   delete _cylinderList;
+
+  delete _robot;
   delete _display;
 }
 
@@ -51,12 +45,16 @@ void Simulator::run()
 
 void Simulator::step()
 {
-  _robot.step(std::vector<int>());
-  _robotPosX += _robot.getMoveX();
-  _robotPosY += _robot.getMoveY();
+  //std::cout << "Simulator::step" << std::endl;
+  Image* img = _getImage(_robotPosX, _robotPosY);
 
   _display->setRobotPos(_robotPosX, _robotPosY);
-  _continue = _display->step();
+  _display->setRobotView(img);
+  _continue = _display->update();
+
+  _robot->step(img);
+  _robotPosX += _robot->getMoveX();
+  _robotPosY += _robot->getMoveY();
 }
 
 // WARNING : Do not handle differant size cylinder
@@ -77,7 +75,7 @@ Image* Simulator::_getImage(float posX, float posY)
       y1 /= sqrt(pow(x1, 2) + pow(y1, 2));
 
       float x2 = _cylinderList->at(iCylinder)->x - posX;
-      float y2 = _cylinderList->at(iCylinder)->x - posY;
+      float y2 = _cylinderList->at(iCylinder)->y - posY;
       // std::cout << x2 << ", " << y2 << std::endl;
 
       float prod = x1 * x2 + y1 * y2;

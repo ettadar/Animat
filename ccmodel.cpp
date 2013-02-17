@@ -1,9 +1,7 @@
 #include "ccmodel.hpp"
 
 #include <cstdlib>
-#include<iostream>
-
-#include "landscape.hpp"
+#include <iostream>
 
 CCmodel::CCmodel(Image* goalViewImg) : 
 	Model()
@@ -50,7 +48,7 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 			debut=fin;
 		}//fin if ==0
 	}//fin du for sur image
-	Affiche(land);
+	print(land);
 	return land;
 }
 
@@ -60,7 +58,7 @@ std::ostream & operator<< (std::ostream &o, LandscapeElem& elem)
 	return o;
 }
 
-void CCmodel::Affiche(Landscape* land)
+void CCmodel::print(Landscape* land)
 {
 	for(int i = 0; i < land->size(); i++)
 	{

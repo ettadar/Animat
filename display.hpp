@@ -6,15 +6,15 @@
 
 #include <vector>
 
+#include "type.hpp"
 #include "cylinder.hpp"
-#include "robot.hpp"
 
 class Display
 {
 public:
   Display(std::vector<Cylinder*>* cylinderList);
   ~Display();
-  bool step();
+  bool update();
   void setRobotPos(float x, float y);
   void setRobotView(Image* img);
 

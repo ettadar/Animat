@@ -1,5 +1,4 @@
 #include "simulator.hpp"
-#include "ccmodel.hpp"
 
 int main()
 {
@@ -32,7 +31,4 @@ int main()
   
   CCmodel* model = new CCmodel(img);
   delete model; */
-  
-                
- 
 }

@@ -3,10 +3,9 @@
 
 #include <vector>
 
+#include "type.hpp"
+#include "type.hpp"
 #include "landscape.hpp"
-#include "robot.hpp"
-
-
 
 class Model
 {

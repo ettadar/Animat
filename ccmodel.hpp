@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "type.hpp"
 #include "model.hpp"
 #include "landscape.hpp"
 
@@ -13,7 +14,7 @@ public :
 	CCmodel(Image* goalViewImg);
 	~CCmodel();
 	void computeMove(Image* img);
-	void Affiche(Landscape* land);
+	void print(Landscape* land);
 private :
 	Landscape* _imageToLandscape(Image* img);
 	//Landscape* _goalViewLand;

@@ -1,6 +1,5 @@
 #include "display.hpp"
 
-#include "robot.hpp"
 #include "sdlhelper.hpp"
 
 Display::Display(std::vector<Cylinder*>* cylinderList):
@@ -39,7 +38,7 @@ Display::~Display()
 	SDL_Quit();
 }
 
-bool Display::step()
+bool Display::update()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
