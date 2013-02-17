@@ -8,8 +8,8 @@
 
 Simulator::Simulator() :
   _display(NULL),
-  _robotPosX(400),
-  _robotPosY(190),
+  _robotPosX(100),
+  _robotPosY(240),
   _cylinderList(NULL),
   _continue(true),
   _nbIter(0)
@@ -18,7 +18,7 @@ Simulator::Simulator() :
   _cylinderList->push_back(new Cylinder(400, 200, RED, 20));
   _cylinderList->push_back(new Cylinder(300, 400, BLUE, 20));
 
-  CCmodel* mod = new CCmodel(_getImage(40, 320));
+  CCmodel* mod = new CCmodel(_getImage(40, 240));
   _robot = new Robot(mod);
 
   _display = new Display(_cylinderList);

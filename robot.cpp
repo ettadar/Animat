@@ -16,8 +16,11 @@ Robot::~Robot()
 
 void Robot::step(Image* view)
 {
-	_moveX = -0.1;//((float)(rand() % 200 - 100)) / 100.;
-	_moveY = 0;//((float)(rand() % 200 - 100)) / 100.;
+	_model->computeMove(view);
+	_moveX = _model->getMoveX();
+	_moveY = _model->getMoveY();//((float)(rand() % 200 - 100)) / 100.;
+	std::cout<<"taille de x "<<_moveX<<std::endl;
+	std::cout<<"taille de y "<<_moveY<<std::endl;
 }
 
 float Robot::getMoveX()
