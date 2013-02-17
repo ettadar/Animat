@@ -8,12 +8,12 @@
 
 struct Cylinder
 {
-  Cylinder(float x, float y, int color, float r) :
-    x(x), y(y), color(color), r(r) {};
-  float x;
-  float y;
-  int color;
-  float r;
+	Cylinder(float x, float y, int color, float r) :
+	x(x), y(y), color(color), r(r) {};
+	float x;
+	float y;
+	int color;
+	float r;
 };
 
 #endif // !CYLINDER_HPP
