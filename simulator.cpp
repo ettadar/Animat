@@ -10,6 +10,8 @@ Simulator::Simulator() :
   _display(NULL),
   _robotPosX(100),
   _robotPosY(240),
+  _goalPosX(100),
+  _goalPosY(240),
   _cylinderList(NULL),
   _continue(true),
   _nbIter(0)
@@ -18,11 +20,17 @@ Simulator::Simulator() :
   _cylinderList->push_back(new Cylinder(400, 200, RED, 20));
   _cylinderList->push_back(new Cylinder(300, 400, BLUE, 20));
 
-  CCmodel* mod = new CCmodel(_getImage(40, 240));
+  CCmodel* mod = new CCmodel(_getImage(_goalPosX, _goalPosY));
   _robot = new Robot(mod);
 
   _display = new Display(_cylinderList);
+  _display->setTargetPos(_goalPosX, _goalPosY);
   _display->setRobotPos(_robotPosX, _robotPosY);
+  
+   
+   Image* timg = _getImage(_goalPosX, _goalPosY);
+   
+   _display->setTargetView(timg);
 }
 
 Simulator::~Simulator()

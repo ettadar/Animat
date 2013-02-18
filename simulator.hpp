@@ -28,6 +28,9 @@ private:
 
   float _robotPosX;
   float _robotPosY;
+  
+  float _goalPosX;
+  float _goalPosY;
 
   std::vector<Cylinder*>* _cylinderList;
   bool _continue;

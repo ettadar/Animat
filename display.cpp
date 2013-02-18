@@ -30,6 +30,9 @@ _robotView(0)
 
 	_robot = scaleSurface(IMG_Load("Images/Bee.jpg"),
 		ROBOT_SIZE, ROBOT_SIZE);
+		
+	_target = scaleSurface(IMG_Load("Images/target.png"),
+		ROBOT_SIZE, ROBOT_SIZE);
 }
 
 Display::~Display()
@@ -62,6 +65,9 @@ bool Display::update()
 
 	// Draw robot
 	SDL_BlitSurface(_robot, NULL, _screen, &_robotPos);
+	
+	// Draw target
+	SDL_BlitSurface(_target, NULL, _screen, &_targetPos);
 
 	// Draw robot view
 	if (_robotView != 0)
@@ -84,6 +90,28 @@ bool Display::update()
 		}
 		SDL_BlitSurface(surf, NULL, _screen, &pos);
 	}
+	
+	// Draw goal view
+	if (_targetView != 0)
+	{
+		SDL_Rect pos;
+		pos.x = 400;
+		pos.y = 0;
+		SDL_Surface* surf = createSurface(VIEW_ANGLE + 1, 10, _screen);
+		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
+		{
+			for (int j = 0; j < 10; ++j)
+			{
+				if (_targetView->at(i) == BLACK)
+					putpixel(surf, i, j, 0x000000);
+				else if (_targetView->at(i) == RED)
+					putpixel(surf, i, j, 0xFF0000);
+				else if (_targetView->at(i) == BLUE)
+					putpixel(surf, i, j, 0x0000FF);
+			}
+		}
+		SDL_BlitSurface(surf, NULL, _screen, &pos);
+	}
 
 	SDL_Flip(_screen);
 
@@ -100,3 +128,15 @@ void Display::setRobotView(Image* img)
 {
 	_robotView = img;
 }
+
+void Display::setTargetPos(float x, float y)
+{
+	_targetPos.x = x;// - ROBOT_SIZE / 2;
+	_targetPos.y = y;// - ROBOT_SIZE / 2;
+}
+
+void Display::setTargetView(Image* img)
+{
+	_targetView = img;
+}
+

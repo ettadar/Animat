@@ -22,31 +22,47 @@ void CCmodel::computeMove(Image* img)
 	float x = 0;
 	float y = 0;
 	int j = 0;
+	if(_goalViewLand->at(0)->gap == 0)
+	{
+		int j = 0;
+	}
+	else
+	{
+		int j = 1;
+	}
 	for (int i = 0; i < landView->size(); i++)
 	{
-		while(j + 1 < _goalViewLand->size() && 
-				abs(landView->at(i)->center - _goalViewLand->at(j)->center) >  
-				abs(landView->at(i)->center - _goalViewLand->at(j+1)->center))
-		{
-			j++;
-		}
-		if((landView->at(i)->center - _goalViewLand->at(j)->center) > 0)
-		{
-			y += -cos(landView->at(i)->center);
-			x += sin(landView->at(i)->center);
-		}
-		else if((landView->at(i)->center - _goalViewLand->at(j)->center) < 0)
-		{
-			y += cos(landView->at(i)->center);
-			x += -sin(landView->at(i)->center);
-		}
-	
+		if(landView->at(i)->gap == 0) {// chek to match only object and not gap
+			while(j + 2 < _goalViewLand->size() && 
+					fabs(landView->at(i)->center - _goalViewLand->at(j)->center) >  
+					fabs(landView->at(i)->center - _goalViewLand->at(j+1)->center))
+			{
+				std::cout<<" valeur de j "<<j<<std::endl;
+				j+=2;
+			}
+			if((landView->at(i)->center - _goalViewLand->at(j)->center) > 0)
+			{
+				y += -cos(landView->at(i)->center);
+				x += sin(landView->at(i)->center);
+			}
+			else if((landView->at(i)->center - _goalViewLand->at(j)->center) < 0)
+			{
+				y += cos(landView->at(i)->center);
+				x += -sin(landView->at(i)->center);
+			}
+			else if((landView->at(i)->center - _goalViewLand->at(j)->center) == 0)
+			{
+				std::cout<<" difference == 0 "<<std::endl;
+				y == 0;
+				x == 0;
+			}
+		}//fin du if landview gap == 0
 	}//fin du for i
 	
 	_x = x / landView->size();
 	_y = y / landView->size();
-	std::cout<<"taille de x cc model "<<_x<<std::endl;
-	std::cout<<"taille de y cc model "<<_y<<std::endl;
+	std::cout<<"taille de _x cc model "<<_x<<std::endl;
+	std::cout<<"taille de _y cc model "<<_y<<std::endl;
 	delete landView;
 }
 

@@ -17,12 +17,17 @@ public:
   bool update();
   void setRobotPos(float x, float y);
   void setRobotView(Image* img);
+  void setTargetPos(float x, float y);
+  void setTargetView(Image* img);
 
 private:
   SDL_Surface* _screen;
 
   SDL_Surface* _robot;
   SDL_Rect _robotPos;
+  
+  SDL_Surface* _target;
+  SDL_Rect _targetPos;
 
   std::vector<Cylinder*>* _cylinderList;
   std::vector<SDL_Surface*> _cylinderToDraw;
@@ -30,6 +35,8 @@ private:
   std::vector<SDL_Surface*> _cylinderColorList;
 
   Image* _robotView;
+  
+  Image* _targetView;
 };
 
 #endif // !DISPLAY_HPP
