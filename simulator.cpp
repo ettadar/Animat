@@ -9,7 +9,7 @@
 Simulator::Simulator() :
   _display(NULL),
   _robotPosX(100),
-  _robotPosY(240),
+  _robotPosY(200),
   _goalPosX(100),
   _goalPosY(240),
   _cylinderList(NULL),
@@ -18,8 +18,9 @@ Simulator::Simulator() :
 {
   _cylinderList = new std::vector<Cylinder*>();
   _cylinderList->push_back(new Cylinder(400, 200, RED, 20));
-  _cylinderList->push_back(new Cylinder(300, 400, BLUE, 20));
+  _cylinderList->push_back(new Cylinder(200, 400, BLUE, 20));
 
+	 std::cout << "Goal view " << std::endl;
   CCmodel* mod = new CCmodel(_getImage(_goalPosX, _goalPosY));
   _robot = new Robot(mod);
 
@@ -27,7 +28,7 @@ Simulator::Simulator() :
   _display->setTargetPos(_goalPosX, _goalPosY);
   _display->setRobotPos(_robotPosX, _robotPosY);
   
-   
+  
    Image* timg = _getImage(_goalPosX, _goalPosY);
    
    _display->setTargetView(timg);
@@ -54,6 +55,7 @@ void Simulator::run()
 void Simulator::step()
 {
   //std::cout << "Simulator::step" << std::endl;
+  std::cout << "Objet View" << std::endl;
   Image* img = _getImage(_robotPosX, _robotPosY);
 
   _display->setRobotPos(_robotPosX, _robotPosY);

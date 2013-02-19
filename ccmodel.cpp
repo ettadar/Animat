@@ -19,16 +19,24 @@ CCmodel::~CCmodel()
 void CCmodel::computeMove(Image* img)
 {
 	Landscape* landView = _imageToLandscape(img);
+	
+	//Tangente component x & y
+	//collineat component x1 & y1
+	
 	float x = 0;
 	float y = 0;
+	
+	//float x1 = 0;
+	//float y1 = 0;
+	
 	int j = 0;
 	if(_goalViewLand->at(0)->gap == 0)
 	{
-		int j = 0;
+		j = 0;
 	}
-	else
+	else if(_goalViewLand->at(0)->gap == 1)
 	{
-		int j = 1;
+		j = 1;
 	}
 	for (int i = 0; i < landView->size(); i++)
 	{
@@ -44,20 +52,52 @@ void CCmodel::computeMove(Image* img)
 			{
 				y += -cos(landView->at(i)->center);
 				x += sin(landView->at(i)->center);
+				if((landView->at(i)->size - _goalViewLand->at(j)->size) > 0)
+				{
+					y += -sin(landView->at(i)->center);
+					x += -cos(landView->at(i)->center);
+				}
+				if((landView->at(i)->size - _goalViewLand->at(j)->size) < 0)
+				{
+					y += sin(landView->at(i)->center);
+					x += cos(landView->at(i)->center);
+				}
 			}
 			else if((landView->at(i)->center - _goalViewLand->at(j)->center) < 0)
 			{
 				y += cos(landView->at(i)->center);
 				x += -sin(landView->at(i)->center);
+				if((landView->at(i)->size - _goalViewLand->at(j)->size) > 0)
+				{
+					y += -sin(landView->at(i)->center);
+					x += -cos(landView->at(i)->center);
+				}
+				if((landView->at(i)->size - _goalViewLand->at(j)->size) < 0)
+				{
+					y += sin(landView->at(i)->center);
+					x += cos(landView->at(i)->center);
+				}
 			}
 			else if((landView->at(i)->center - _goalViewLand->at(j)->center) == 0)
 			{
 				std::cout<<" difference == 0 "<<std::endl;
 				y == 0;
 				x == 0;
+				if((landView->at(i)->size - _goalViewLand->at(j)->size) > 0)
+				{
+					y += -sin(landView->at(i)->center);
+					x += -cos(landView->at(i)->center);
+				}
+				if((landView->at(i)->size - _goalViewLand->at(j)->size) < 0)
+				{
+					y += sin(landView->at(i)->center);
+					x += cos(landView->at(i)->center);
+				}
 			}
 		}//fin du if landview gap == 0
 	}//fin du for i
+	
+	
 	
 	_x = x / landView->size();
 	_y = y / landView->size();
