@@ -10,6 +10,15 @@
 #define RED 1
 #define BLUE 2
 
+#define HUERED 0
+#define SATRED 100
+#define VALUERED 100
+
+#define HUEBLUE 240
+#define SATBLUE 100
+#define VALUEBLUE 100
+
+
 typedef std::vector<int> Image;
 
 #endif // !TYPE_HH

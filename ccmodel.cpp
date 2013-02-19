@@ -21,13 +21,9 @@ void CCmodel::computeMove(Image* img)
 	Landscape* landView = _imageToLandscape(img);
 	
 	//Tangente component x & y
-	//collineat component x1 & y1
 	
 	float x = 0;
 	float y = 0;
-	
-	//float x1 = 0;
-	//float y1 = 0;
 	
 	int j = 0;
 	if(_goalViewLand->at(0)->gap == 0)

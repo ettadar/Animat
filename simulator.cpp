@@ -8,8 +8,8 @@
 
 Simulator::Simulator() :
   _display(NULL),
-  _robotPosX(100),
-  _robotPosY(200),
+  _robotPosX(250),
+  _robotPosY(240),
   _goalPosX(100),
   _goalPosY(240),
   _cylinderList(NULL),
@@ -17,8 +17,8 @@ Simulator::Simulator() :
   _nbIter(0)
 {
   _cylinderList = new std::vector<Cylinder*>();
-  _cylinderList->push_back(new Cylinder(400, 200, RED, 20));
-  _cylinderList->push_back(new Cylinder(200, 400, BLUE, 20));
+  _cylinderList->push_back(new Cylinder(400, 240, RED, 20));
+  //_cylinderList->push_back(new Cylinder(200, 400, BLUE, 20));
 
 	 std::cout << "Goal view " << std::endl;
   CCmodel* mod = new CCmodel(_getImage(_goalPosX, _goalPosY));
