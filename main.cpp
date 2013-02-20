@@ -1,9 +1,18 @@
 #include "simulator.hpp"
 
-int main()
+int main(int argc, char** argv)
 {
-  Simulator* sim = new Simulator();
-  sim->run();
+  Simulator* sim = new Simulator(false/*scene, typeModel*/);
+  if (argc > 1)
+  {
+    // --one-run
+    sim->setRobotPos(240, 100);
+    sim->run();
+  }
+  else
+  {
+    sim->generatePerfImage();
+  }
   delete sim;
   
   /*Image* img = new Image();

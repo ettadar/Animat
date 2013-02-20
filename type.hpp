@@ -1,6 +1,9 @@
 #ifndef TYPE_HH
 # define TYPE_HH
 
+#include <iostream>
+
+
 #define VIEW_ANGLE 220
 #define ROBOT_SIZE 40
 #define PI 3.141592653589

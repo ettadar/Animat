@@ -6,14 +6,15 @@
 #include <unistd.h>
 #include <cfloat>
 
-Simulator::Simulator() :
+Simulator::Simulator(bool display) :
   _display(NULL),
-  _robotPosX(240),
-  _robotPosY(100),
+  _robotPosX(0),
+  _robotPosY(0),
   _goalPosX(100),
   _goalPosY(240),
   _cylinderList(NULL),
   _continue(true),
+  _windowClosed(false),
   _nbIter(0)
 {
   _cylinderList = new std::vector<Cylinder*>();
@@ -24,10 +25,13 @@ Simulator::Simulator() :
   CCmodel* mod = new CCmodel(timg);
   _robot = new Robot(mod);
 
-  _display = new Display(_cylinderList);
-  _display->setTargetPos(_goalPosX, _goalPosY);
-  _display->setTargetView(timg);
-  _display->setRobotPos(_robotPosX, _robotPosY);   
+  if (display)
+  {
+    _display = new Display(_cylinderList);
+    _display->setTargetPos(_goalPosX, _goalPosY);
+    _display->setTargetView(timg);
+    _display->setRobotPos(_robotPosX, _robotPosY);
+  }
 }
 
 Simulator::~Simulator()
@@ -39,28 +43,47 @@ Simulator::~Simulator()
   delete _display;
 }
 
+void Simulator::setRobotPos(float robotPosX, float robotPosY)
+{
+  _robotPosX = robotPosX;
+  _robotPosY = robotPosY;
+}
+
 void Simulator::run()
 {
-  while (_continue)
+  while (_continue && !_windowClosed)
   {
     //usleep(1000000);
     step();
   }
+
+  if (_display)
+    while (!_windowClosed)
+      _windowClosed = _display->update();    
+}
+
+void Simulator::generatePerfImage()
+{
+
 }
 
 void Simulator::step()
 {
-  //std::cout << "Simulator::step" << std::endl;
-  std::cout << "Objet View" << std::endl;
   Image* img = _getImage(_robotPosX, _robotPosY);
 
-  _display->setRobotPos(_robotPosX, _robotPosY);
-  _display->setRobotView(img);
-  _continue = _display->update();
+  if (_display)
+  {
+    _display->setRobotPos(_robotPosX, _robotPosY);
+    _display->setRobotView(img);
+    _windowClosed = _display->update();
+  }
 
   _robot->step(img);
   _robotPosX += _robot->getMoveX();
   _robotPosY += _robot->getMoveY();
+
+  if (_robot->getMoveX() == 0 && _robot->getMoveY() == 0)
+    _continue = false;
 }
 
 // WARNING : Do not handle differant size cylinder

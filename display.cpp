@@ -44,11 +44,11 @@ Display::~Display()
 bool Display::update()
 {
 	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch(event.type)
+	SDL_WaitEvent(&event);
+	if (event.type == SDL_QUIT)
 	{
-		case SDL_QUIT:
-			return false;
+		std::cout << "SDL_QUIT" << std::endl;
+		return true;
 	}
 
 	// Clear screen
@@ -63,34 +63,12 @@ bool Display::update()
 		SDL_BlitSurface(_cylinderToDraw[i], NULL, _screen, &cylinderPos);
 	}
 
-	// Draw robot
-	SDL_BlitSurface(_robot, NULL, _screen, &_robotPos);
-	
 	// Draw target
 	SDL_BlitSurface(_target, NULL, _screen, &_targetPos);
 
-	// Draw robot view
-	if (_robotView != 0)
-	{
-		SDL_Rect pos;
-		pos.x = 0;
-		pos.y = 0;
-		SDL_Surface* surf = createSurface(VIEW_ANGLE + 1, 10, _screen);
-		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
-		{
-			for (int j = 0; j < 10; ++j)
-			{
-				if (_robotView->at(i) == BLACK)
-					putpixel(surf, i, j, 0x000000);
-				else if (_robotView->at(i) == RED)
-					putpixel(surf, i, j, 0xFF0000);
-				else if (_robotView->at(i) == BLUE)
-					putpixel(surf, i, j, 0x0000FF);
-			}
-		}
-		SDL_BlitSurface(surf, NULL, _screen, &pos);
-	}
-	
+	// Draw robot
+	SDL_BlitSurface(_robot, NULL, _screen, &_robotPos);	
+
 	// Draw goal view
 	if (_targetView != 0)
 	{
@@ -113,9 +91,31 @@ bool Display::update()
 		SDL_BlitSurface(surf, NULL, _screen, &pos);
 	}
 
+	// Draw robot view
+	if (_robotView != 0)
+	{
+		SDL_Rect pos;
+		pos.x = 0;
+		pos.y = 0;
+		SDL_Surface* surf = createSurface(VIEW_ANGLE + 1, 10, _screen);
+		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
+		{
+			for (int j = 0; j < 10; ++j)
+			{
+				if (_robotView->at(i) == BLACK)
+					putpixel(surf, i, j, 0x000000);
+				else if (_robotView->at(i) == RED)
+					putpixel(surf, i, j, 0xFF0000);
+				else if (_robotView->at(i) == BLUE)
+					putpixel(surf, i, j, 0x0000FF);
+			}
+		}
+		SDL_BlitSurface(surf, NULL, _screen, &pos);
+	}
+
 	SDL_Flip(_screen);
 
-	return true;
+	return false;
 }
 
 void Display::setRobotPos(float x, float y)
@@ -131,8 +131,8 @@ void Display::setRobotView(Image* img)
 
 void Display::setTargetPos(float x, float y)
 {
-	_targetPos.x = x;// - ROBOT_SIZE / 2;
-	_targetPos.y = y;// - ROBOT_SIZE / 2;
+	_targetPos.x = x - ROBOT_SIZE / 2;
+	_targetPos.y = y - ROBOT_SIZE / 2;
 }
 
 void Display::setTargetView(Image* img)

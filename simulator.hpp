@@ -13,10 +13,12 @@
 class Simulator
 {
 public:
-  Simulator();
+  Simulator(bool display);
   ~Simulator();
 
+  void setRobotPos(float robotPosX, float robotPosY);
   void run();
+  void generatePerfImage();
   void step();
 
 private:
@@ -33,7 +35,9 @@ private:
   float _goalPosY;
 
   std::vector<Cylinder*>* _cylinderList;
+
   bool _continue;
+  bool _windowClosed;
   int _nbIter;
 };
 
