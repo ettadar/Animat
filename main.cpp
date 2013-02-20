@@ -1,19 +1,27 @@
+#include <cstdlib>
+
 #include "simulator.hpp"
 
 int main(int argc, char** argv)
 {
-  Simulator* sim = new Simulator(false/*scene, typeModel*/);
-  if (argc > 1)
+  if (argc >= 3)
   {
-    // --one-run
-    sim->setRobotPos(240, 100);
-    sim->run();
+    if (argc == 6)
+    {
+      Simulator* sim = new Simulator(true, std::string(argv[1]), std::atoi(argv[2]));
+      sim->setRobotPos(std::atoi(argv[4]), std::atoi(argv[5]));
+      sim->run();
+      delete sim;
+      return 0;
+    }
+    else if (argc == 3)
+    {
+      Simulator* sim = new Simulator(false, std::string(argv[1]), std::atoi(argv[2]));
+      sim->generatePerfImage();
+      return 0;
+    }
   }
-  else
-  {
-    sim->generatePerfImage();
-  }
-  delete sim;
+  std::cerr << "Usage = " << argv[0] << " <scene_file> <model_number> [-r <robot_pos_x> <robot_pos_y>]" << std::endl;
   
   /*Image* img = new Image();
   

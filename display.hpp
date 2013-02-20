@@ -12,7 +12,7 @@
 class Display
 {
 public:
-  Display(std::vector<Cylinder*>* cylinderList);
+  Display(std::vector<Cylinder*>* cylinderList, int width, int height);
   ~Display();
   bool update();
   void setRobotPos(float x, float y);

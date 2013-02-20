@@ -2,7 +2,7 @@
 
 #include "sdlhelper.hpp"
 
-Display::Display(std::vector<Cylinder*>* cylinderList):
+Display::Display(std::vector<Cylinder*>* cylinderList, int width, int height):
 _screen(NULL),
 _cylinderList(cylinderList),
 _cylinderToDraw(std::vector<SDL_Surface*>()),
@@ -11,7 +11,7 @@ _robotView(0)
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetCaption("Animat", NULL);
 
-	_screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	_screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 	SDL_FillRect(_screen, NULL, SDL_MapRGB(_screen->format, 255, 255, 255));
 
 	_cylinderColorList.reserve(NB_COLOR);

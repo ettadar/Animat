@@ -3,23 +3,62 @@
 #include <ctime>
 #include <cmath>
 #include <iostream>
+#include <fstream>
 #include <unistd.h>
+#include <cstdlib>
 #include <cfloat>
 
-Simulator::Simulator(bool display) :
+Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :
   _display(NULL),
+  _robot(NULL),
+
+  _sceneWidth(0),
+  _sceneHeight(0),
+  
   _robotPosX(0),
   _robotPosY(0),
+  
   _goalPosX(100),
   _goalPosY(240),
+  
   _cylinderList(NULL),
+  
   _continue(true),
   _windowClosed(false),
   _nbIter(0)
 {
   _cylinderList = new std::vector<Cylinder*>();
-  _cylinderList->push_back(new Cylinder(400, 100, RED, 20));
-  _cylinderList->push_back(new Cylinder(350, 350, BLUE, 20));
+
+  // read scene file
+  std::string line;
+  std::ifstream myfile(sceneFile.c_str());
+  if (myfile.is_open())
+  {
+    getline(myfile, line);
+    int bPos = 0;
+    int ePos = line.find(' ');
+    _sceneWidth = std::atoi(line.substr(bPos, ePos - bPos).c_str());
+    bPos = ePos + 1;
+    ePos = line.find(' ', bPos);
+    _sceneHeight = std::atoi(line.substr(bPos, ePos - bPos).c_str());
+    while ( myfile.good() )
+    {
+      getline(myfile, line);
+      int bPos = 0;
+      int ePos = line.find(' ');
+      int c = std::atoi(line.substr(bPos, ePos - bPos).c_str());
+      bPos = ePos + 1;
+      ePos = line.find(' ', bPos);
+      int x = std::atoi(line.substr(bPos, ePos - bPos).c_str());
+      bPos = ePos + 1;
+      ePos = line.find(' ', bPos);
+      int y = std::atoi(line.substr(bPos, ePos - bPos).c_str());
+      _cylinderList->push_back(new Cylinder(x, y, c, 20));
+    }
+    myfile.close();
+  }
+  else
+    std::cerr << "Unable to open file " << sceneFile << std::endl;
 
   Image* timg = _getImage(_goalPosX, _goalPosY);
   CCmodel* mod = new CCmodel(timg);
@@ -27,7 +66,7 @@ Simulator::Simulator(bool display) :
 
   if (display)
   {
-    _display = new Display(_cylinderList);
+    _display = new Display(_cylinderList, _sceneWidth, _sceneHeight);
     _display->setTargetPos(_goalPosX, _goalPosY);
     _display->setTargetView(timg);
     _display->setRobotPos(_robotPosX, _robotPosY);

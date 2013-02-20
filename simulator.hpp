@@ -13,7 +13,7 @@
 class Simulator
 {
 public:
-  Simulator(bool display);
+  Simulator(bool display, std::string sceneFile, int modelNumber);
   ~Simulator();
 
   void setRobotPos(float robotPosX, float robotPosY);
@@ -27,6 +27,9 @@ private:
 private:
   Display* _display;
   Robot* _robot;
+
+  int _sceneWidth;
+  int _sceneHeight;
 
   float _robotPosX;
   float _robotPosY;
