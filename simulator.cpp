@@ -20,18 +20,14 @@ Simulator::Simulator() :
   _cylinderList->push_back(new Cylinder(400, 240, RED, 20));
   //_cylinderList->push_back(new Cylinder(200, 400, BLUE, 20));
 
-	 std::cout << "Goal view " << std::endl;
-  CCmodel* mod = new CCmodel(_getImage(_goalPosX, _goalPosY));
+  Image* timg = _getImage(_goalPosX, _goalPosY);
+  CCmodel* mod = new CCmodel(timg);
   _robot = new Robot(mod);
 
   _display = new Display(_cylinderList);
   _display->setTargetPos(_goalPosX, _goalPosY);
-  _display->setRobotPos(_robotPosX, _robotPosY);
-  
-  
-   Image* timg = _getImage(_goalPosX, _goalPosY);
-   
-   _display->setTargetView(timg);
+  _display->setTargetView(timg);
+  _display->setRobotPos(_robotPosX, _robotPosY);   
 }
 
 Simulator::~Simulator()
