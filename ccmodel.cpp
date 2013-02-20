@@ -4,6 +4,12 @@
 #include <iostream>
 #include <cmath>
 
+std::ostream & operator<< (std::ostream &o, LandscapeElem& elem)
+{
+	o << " objet "<< elem.gap << " centre " << elem.center << " taille de l'objet " << elem.size;
+	return o;
+}
+
 CCmodel::CCmodel(Image* goalViewImg) : 
 	Model()
 	 
@@ -25,81 +31,26 @@ void CCmodel::computeMove(Image* img)
 	float x = 0;
 	float y = 0;
 	
-	int j = 0;
-	if(_goalViewLand->at(0)->gap == 0)
-	{
-		j = 0;
-	}
-	else if(_goalViewLand->at(0)->gap == 1)
-	{
-		j = 1;
-	}
-	for (int i = 0; i < landView->size(); i++)
-	{
-		if(landView->at(i)->gap == 0) {// chek to match only object and not gap
-			while(j + 2 < _goalViewLand->size() && 
-					fabs(landView->at(i)->center - _goalViewLand->at(j)->center) >  
-					fabs(landView->at(i)->center - _goalViewLand->at(j+1)->center))
-			{
-				std::cout<<" valeur de j "<<j<<std::endl;
-				j+=2;
-			}
-			if((landView->at(i)->center - _goalViewLand->at(j)->center) > 0)
-			{
-				y += -cos(landView->at(i)->center);
-				x += sin(landView->at(i)->center);
-				if((landView->at(i)->size - _goalViewLand->at(j)->size) > 0)
-				{
-					y += -sin(landView->at(i)->center);
-					x += -cos(landView->at(i)->center);
-				}
-				if((landView->at(i)->size - _goalViewLand->at(j)->size) < 0)
-				{
-					y += sin(landView->at(i)->center);
-					x += cos(landView->at(i)->center);
-				}
-			}
-			else if((landView->at(i)->center - _goalViewLand->at(j)->center) < 0)
-			{
-				y += cos(landView->at(i)->center);
-				x += -sin(landView->at(i)->center);
-				if((landView->at(i)->size - _goalViewLand->at(j)->size) > 0)
-				{
-					y += -sin(landView->at(i)->center);
-					x += -cos(landView->at(i)->center);
-				}
-				if((landView->at(i)->size - _goalViewLand->at(j)->size) < 0)
-				{
-					y += sin(landView->at(i)->center);
-					x += cos(landView->at(i)->center);
-				}
-			}
-			else if((landView->at(i)->center - _goalViewLand->at(j)->center) == 0)
-			{
-				std::cout<<" difference == 0 "<<std::endl;
-				y == 0;
-				x == 0;
-				if((landView->at(i)->size - _goalViewLand->at(j)->size) > 0)
-				{
-					y += -sin(landView->at(i)->center);
-					x += -cos(landView->at(i)->center);
-				}
-				if((landView->at(i)->size - _goalViewLand->at(j)->size) < 0)
-				{
-					y += sin(landView->at(i)->center);
-					x += cos(landView->at(i)->center);
-				}
-			}
-		}//fin du if landview gap == 0
-	}//fin du for i
-	
-	
-	
+	int iBegin = landView->at(0)->gap ? 0 : 1;
+	int jBegin = _goalViewLand->at(0)->gap ? 0 : 1;
+
+	_gapOrLandmarkComputeMove(x, y, iBegin, jBegin, landView);
+	_gapOrLandmarkComputeMove(x, y, abs(iBegin - 1), abs(jBegin - 1), landView);
+
 	_x = x / landView->size();
 	_y = y / landView->size();
+
 	std::cout<<"taille de _x cc model "<<_x<<std::endl;
 	std::cout<<"taille de _y cc model "<<_y<<std::endl;
 	delete landView;
+}
+
+void CCmodel::print(Landscape* land)
+{
+	for(int i = 0; i < land->size(); i++)
+	{
+		std::cout << "objet numero " << i << " " << *(land->at(i)) << std::endl;
+	}
 }
 
 Landscape* CCmodel::_imageToLandscape(Image* img)
@@ -138,21 +89,43 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 	return land;
 }
 
-std::ostream & operator<< (std::ostream &o, LandscapeElem& elem)
+void CCmodel::_gapOrLandmarkComputeMove(float& x, float& y, int iBegin, int jBegin, Landscape* landView)
 {
-	o << " objet "<< elem.gap << " centre " << elem.center << " angle " << ((elem.center - (VIEW_ANGLE / 2)) / 360 ) * 2 * PI << " taille de l'objet " << elem.size;
-	return o;
-}
 
-void CCmodel::print(Landscape* land)
-{
-	for(int i = 0; i < land->size(); i++)
+	int i = iBegin;
+	int j = jBegin;
+
+	for (; i < landView->size(); i += 2)
 	{
-		std::cout << "objet numero " << i << " " << *(land->at(i)) << std::endl;
+		while(j + 2 < _goalViewLand->size() && 
+			fabs(landView->at(i)->center - _goalViewLand->at(j)->center) >  
+			fabs(landView->at(i)->center - _goalViewLand->at(j + 2)->center))
+		{
+			j += 2;
+		}
+
+		// Compute tangential component
+		if((landView->at(i)->center > _goalViewLand->at(j)->center))
+		{
+			x += -sin(landView->at(i)->center);
+			y += cos(landView->at(i)->center);
+		}
+		else if((landView->at(i)->center < _goalViewLand->at(j)->center))
+		{
+			x += sin(landView->at(i)->center);
+			y += -cos(landView->at(i)->center);
+		}
+
+		// Compute radial component
+		if((landView->at(i)->size > _goalViewLand->at(j)->size))
+		{
+			y += -sin(landView->at(i)->center);
+			x += -cos(landView->at(i)->center);
+		}
+		else if((landView->at(i)->size < _goalViewLand->at(j)->size))
+		{
+			y += sin(landView->at(i)->center);
+			x += cos(landView->at(i)->center);
+		}
 	}
 }
-
-
-
-
-

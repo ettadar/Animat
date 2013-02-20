@@ -17,7 +17,9 @@ public :
 	void print(Landscape* land);
 private :
 	Landscape* _imageToLandscape(Image* img);
-	//Landscape* _goalViewLand;
+	void _gapOrLandmarkComputeMove(float& x, float& y, int iBegin, int jBegin, Landscape* landView);
 };
+
+
 
 #endif // !CCMODEL_HPP
