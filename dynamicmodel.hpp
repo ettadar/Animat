@@ -10,14 +10,14 @@
 
 class Dynamicmodel : public Model
 {
-public :
+public:
 	Dynamicmodel(Image* goalViewImg);
 	~Dynamicmodel();
 	void computeMove(Image* img);
-	//void print(Landscape* land);
-private :
+
+protected:
 	Landscape* _imageToLandscape(Image* img);
-	//Landscape* _goalViewLand;
+	virtual float _getSimilarity(LandscapeElem* e1, LandscapeElem* e2);
 };
 
 #endif // !DYNAMICMODEL_HPP

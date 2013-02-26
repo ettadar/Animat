@@ -24,6 +24,7 @@ protected:
 };
 
 #include "ccmodel.hpp"
+#include "dynamicmodel.hpp"
 
 #endif // !MODEL_HPP
 
