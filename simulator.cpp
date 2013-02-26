@@ -17,7 +17,7 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :  _d
   
   _robotPosX(0),
   _robotPosY(0),
-  
+
   _goalPosX(0),
   _goalPosY(0),
   
@@ -274,8 +274,12 @@ void Simulator::step()
   float PostStepX = _robotPosX;
   float PostStepY = _robotPosX;
 
-  if (_robot->getMoveX() == 0 && _robot->getMoveY() == 0)
+  if ((fabs(_robot->getMoveX()) < 0.001 && fabs(_robot->getMoveY()) < 0.001) ||
+    _robotPosX < 0 || _robotPosX >= _sceneWidth ||
+    _robotPosY < 0 || _robotPosY >= _sceneHeight)
+  {
     _continue = false;
+  }
 }
 
 // WARNING : Do not handle differant size cylinder
