@@ -40,20 +40,21 @@ void Dynamicmodel::computeMove(Image* img)
 
 		for (int j = 0; j < land->size(); j++)
 		{
-			if (lTable[(i - 1) + 1]->at((j - 1) + 1) >= lTable[i + 1]->at((j - 1) + 1) &&
-				lTable[(i - 1) + 1]->at((j - 1) + 1) >= lTable[(i - 1) + 1]->at(j + 1))
+			float sim = _getSimilarity(_goalViewLand->at(i), land->at(j));
+			if (lTable[(i - 1) + 1]->at((j - 1) + 1) + sim >= lTable[i + 1]->at((j - 1) + 1) &&
+				lTable[(i - 1) + 1]->at((j - 1) + 1) + sim >= lTable[(i - 1) + 1]->at(j + 1))
 			{
-				lTable[i + 1]->push_back(_getSimilarity(_goalViewLand->at(i), land->at(j)) + lTable[(i - 1) + 1]->at((j - 1) + 1));
+				lTable[i + 1]->push_back(sim + lTable[(i - 1) + 1]->at((j - 1) + 1));
 				pTable[i + 1]->push_back(1);
 			}
 			else if ((lTable[(i - 1) + 1]->at((j) + 1) >= lTable[i + 1]->at((j - 1) + 1)))
 			{
-				lTable[i + 1]->push_back(_getSimilarity(_goalViewLand->at(i), land->at(j)) + lTable[i + 1]->at((j - 1) + 1));
+				lTable[i + 1]->push_back(lTable[(i - 1) + 1]->at(j + 1));
 				pTable[i + 1]->push_back(2);				
 			}
 			else
 			{
-				lTable[i + 1]->push_back(_getSimilarity(_goalViewLand->at(i), land->at(j)) + lTable[(i - 1) + 1]->at(j + 1));
+				lTable[i + 1]->push_back(lTable[i + 1]->at((j - 1) + 1));
 				pTable[i + 1]->push_back(3);				
 			}
 		}
@@ -64,6 +65,14 @@ void Dynamicmodel::computeMove(Image* img)
 		for (int i = 0; i < _goalViewLand->size(); i++)
 		{
 			std::cout << pTable[i + 1]->at(j + 1) << " ";
+		}
+		std::cout << std::endl;
+	}
+	for (int j = 0; j < land->size(); j++)
+	{
+		for (int i = 0; i < _goalViewLand->size(); i++)
+		{
+			std::cout << lTable[i + 1]->at(j + 1) << " ";
 		}
 		std::cout << std::endl;
 	}
@@ -108,22 +117,22 @@ Landscape* Dynamicmodel::_imageToLandscape(Image* img)
 {
 	Landscape* land = new Landscape();	
 
-	int begin = 0;
+	float begin = 0;
 	int currColor = img->at(0);
-	int i;
+	int i = 0;
 	for (i = 0; i < img->size(); i++)
 	{
 		if (img->at(i) != currColor)
 		{
 			if (currColor == RED)
 			{
-				land->push_back(new LandscapeElem(false, (i + begin - 220) / 2. / 360. * PI,
-					(i - begin - 110) / 360. * PI, HUERED, SATRED, VALUERED));
+				land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+					(i - begin) / 360. * PI, HUERED, SATRED, VALUERED));
 			}
 			else if (currColor == BLUE)
 			{
-				land->push_back(new LandscapeElem(false, (i + begin - 220) / 2. / 360. * PI,
-					(i - begin - 110) / 360. * PI, HUEBLUE, SATBLUE, VALUEBLUE));
+				land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+					(i - begin) / 360. * PI, HUEBLUE, SATBLUE, VALUEBLUE));
 			}
 			begin = i;
 			currColor = img->at(i);
@@ -131,12 +140,12 @@ Landscape* Dynamicmodel::_imageToLandscape(Image* img)
 	}
 	if (currColor == RED)
 	{
-		land->push_back(new LandscapeElem(false, (i + begin) / 2. / 360. * PI,
+		land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
 			(i - begin) / 360. * PI, HUERED, SATRED, VALUERED));
 	}
 	else if (currColor == BLUE)
 	{
-		land->push_back(new LandscapeElem(false, (i + begin) / 2. / 360. * PI,
+		land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
 			(i - begin) / 360. * PI, HUEBLUE, SATBLUE, VALUEBLUE));
 	}
 
@@ -145,8 +154,8 @@ Landscape* Dynamicmodel::_imageToLandscape(Image* img)
 
 float Dynamicmodel::_getSimilarity(LandscapeElem* e1, LandscapeElem* e2)
 {
-	return exp(-pow((e1->hue - e2->hue) / 5, 2) - 
-		pow((e1->sat - e2->sat) / 15, 2) -
-		pow((e1->lum - e2->lum) / 15, 2) -
-		pow((e1->center - e2->center) / (PI / 2), 2));
+	return exp(-pow(fabs(e1->hue - e2->hue) / 5, 2) - 
+		pow(fabs(e1->sat - e2->sat) / 15, 2) -
+		pow(fabs(e1->lum - e2->lum) / 15, 2) -
+		pow(fabs(e1->center - e2->center) / (PI / 2), 2));
 }
