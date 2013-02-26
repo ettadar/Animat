@@ -121,16 +121,16 @@ void Simulator::generatePerfImage()
   TGAImage *img = new TGAImage(_sceneWidth,_sceneHeight);
   short lastWitdth = 0;
   short lastheight = 0;
-  for(int j = 0; j < _sceneWidth / 20 ; j++)
+  for(int j = 0; j < _sceneWidth / SIZEPIXEL ; j++)
   {
-    for(int i = 0; i < _sceneHeight / 20 ;i++)
+    for(int i = 0; i < _sceneHeight / SIZEPIXEL ;i++)
     {
-      setRobotPos( j * 20, i * 20 );
+      setRobotPos( j * 20 + (SIZEPIXEL / 2), i * 20 + (SIZEPIXEL / 2));
       //setRobotPos( 500, 500 );
       std::cout << "run number" << (j * _sceneHeight / 20) + i  <<std::endl;
       run();
-      short width = j * 20;
-      short height = i * 20;
+      short width = j * SIZEPIXEL;
+      short height = i * SIZEPIXEL;
       //declare a temporary color variable
       Colour c;
       //draw objectif
@@ -138,18 +138,17 @@ void Simulator::generatePerfImage()
       c.g = 0;
       c.b = 0;
       c.a = 255;
-      for (int g = 0; g < 20; ++g)
+      for (int g = 0; g < SIZEPIXEL; ++g)
       {
-        //img->setPixel(c,_goalPosX + g, _goalPosY);
-        _drawArrow(_goalPosX, _goalPosY, 5, 10, img);
-        //img->setPixel(c,_goalPosX + g, _goalPosY + g);
+        //_drawArrow(_goalPosX,_goalPosY, 0, 10, img);
+        img->setPixel(c,_goalPosX + g, _goalPosY + g);
       }
       if(fabs(_robotPosX - _goalPosX) < 5 && fabs(_robotPosY - _goalPosY) < 5)
       {
         //Loop through image and set all pixels to red
-        for(int x = width; x < width + 20; x++)
+        for(int x = width; x < width + SIZEPIXEL; x++)
         //int x = j ;
-          for(int y = height; y < height + 20; y++)
+          for(int y = height; y < height + SIZEPIXEL; y++)
           {
             c.r = 20;
             c.g = 20;
@@ -161,8 +160,8 @@ void Simulator::generatePerfImage()
       }
       else
       {
-        for(int x = width; x < width + 20; x++)
-          for(int y = height; y < height + 20; y++)
+        for(int x = width; x < width + SIZEPIXEL; x++)
+          for(int y = height; y < height + SIZEPIXEL; y++)
           {
             c.r = 255;
             c.g = 255;
@@ -172,12 +171,15 @@ void Simulator::generatePerfImage()
           }
           lastheight = height;
       }
-      setRobotPos( j * 20, i * 20 );
+      setRobotPos( j * SIZEPIXEL, i * SIZEPIXEL );
       step();
       float moveX = (float)_robot->getMoveX();
       float moveY = (float)_robot->getMoveY();
+      float newSize = sqrt(pow(moveX, 2) + pow(moveY,2)) * (SIZEPIXEL / 2);
+      //float newSize = 8;
+      //float moveX = j * 20 - _sceneWidth / 2;
+      //float moveY = i * 20 - _sceneHeight/ 2;
       std::cout << "_robotX " << moveX << "_robotY " << moveY << std::endl;
-      //TODO gerer le cas div par 0
       if(moveX == 0)
       {
         if (moveY == 0)
@@ -185,63 +187,63 @@ void Simulator::generatePerfImage()
         }
         else if (moveY > 0)
         {
-          _drawArrow(width, height, 0, 10, img);
+          _drawArrow(width, height, 0, newSize, img);
         }
         else if (moveY < 0)
         {
-          _drawArrow(width, height, 4, 10, img);
+          _drawArrow(width, height, 4, newSize, img);
         }
       }
       else if (moveY == 0)
       {
         if (moveX > 0)
         {
-          _drawArrow(width, height, 6, 10, img);
+          _drawArrow(width, height, 6, newSize, img);
         }
         else
         {
-          _drawArrow(width, height, 2, 10, img);
+          _drawArrow(width, height, 2, newSize, img);
         }
       }
-      else if (fabs(moveX / moveY) > 2.42)
+      else if (fabs(moveY / moveX) > 2.42)
       {
         if (moveY > 0)
         {
-          _drawArrow(width, height, 0, 10, img);
+          _drawArrow(width, height, 0, newSize, img);
         }
         else
         {
-          _drawArrow(width, height, 4, 10, img);
+          _drawArrow(width, height, 4, newSize, img);
         }
       }
-      else if (fabs(moveX / moveY) > 0.41)
+      else if (fabs(moveY / moveX) > 0.41)
       {
         if (moveY > 0 && moveX > 0)
         {
-          _drawArrow(width, height, 7, 10, img);
+          _drawArrow(width, height, 7, newSize, img);
         }
         else if (moveY > 0 && moveX < 0)
         {
-          _drawArrow(width, height, 1, 10, img);
+          _drawArrow(width, height, 1, newSize, img);
         }
         else if (moveY < 0 && moveX > 0)
         {
-          _drawArrow(width, height, 5, 10, img);
+          _drawArrow(width, height, 5, newSize, img);
         }
         else if (moveY < 0 && moveX < 0)
         {
-          _drawArrow(width, height, 3, 10, img);
+          _drawArrow(width, height, 3, newSize, img);
         }
       }
       else
       {
         if(moveX < 0)
         {
-          _drawArrow(width, height, 2, 10, img);
+          _drawArrow(width, height, 2, newSize, img);
         }
         else if (moveX > 0)
         {
-          _drawArrow(width, height, 6, 10, img);
+          _drawArrow(width, height, 6, newSize, img);
         }
       }
     }
@@ -328,7 +330,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
   
   std::cout<<"_drawArrow pos X "<<positionX << std::endl;
   std::cout<<"_drawArrow pos Y "<<positionY << std::endl;
-  size = 10;
+  //size = 10;
   Colour c;
   c.r = 0;
   c.g = 0;
@@ -340,12 +342,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
       for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + (size / 2), positionY + i + (size / 2)); 
+        img->setPixel(c, positionX + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + size - i + (size / 2));
-        img->setPixel(c, positionX - i + (size / 2), positionY + size - i + (size / 2));
+        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
+        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
       }
       break;
     }
@@ -353,12 +355,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
       for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + size - i + (size / 2), positionY + i + (size / 2)); 
+        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + size + (size / 2));
-        img->setPixel(c, positionX + (size / 2), positionY + size - i + (size / 2));
+        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
+        img->setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
       }
       break;
     }
@@ -366,12 +368,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
       for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + (size / 2) + (size / 2)); 
+        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + (size / 2) - i + (size / 2));
-        img->setPixel(c, positionX + i + (size / 2), positionY + (size / 2) + i + (size / 2));
+        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
+        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
       }
       break;
     }
@@ -379,12 +381,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
     for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + i + (size / 2)); 
+        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + (size / 2));
-        img->setPixel(c, positionX + (size / 2), positionY + i + (size / 2));
+        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
+        img->setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
       }
       break;
     }
@@ -392,12 +394,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
       for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + (size / 2) + (size / 2), positionY + i + (size / 2)); 
+        img->setPixel(c, positionX + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + (size / 2) + i + (size / 2), positionY + i + (size / 2));
-        img->setPixel(c, positionX + (size / 2) - i + (size / 2), positionY + i + (size / 2));
+        img->setPixel(c, positionX + (SIZEPIXEL / 2) + i, positionY - size + i + (SIZEPIXEL / 2));
+        img->setPixel(c, positionX + (SIZEPIXEL / 2) - i, positionY - size + i + (SIZEPIXEL / 2));
       }
       break;
     }
@@ -406,12 +408,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
     for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + size - i + (size / 2), positionY + i + (size / 2)); 
+        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + size - i + (size / 2), positionY + (size / 2));
-        img->setPixel(c, positionX + size + (size / 2), positionY + i + (size / 2));
+        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
+        img->setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
       }
       break;
     }
@@ -419,12 +421,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
       for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + (size / 2) + (size / 2)); 
+        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + size - i + (size / 2), positionY + (size / 2) - i + (size / 2));
-        img->setPixel(c, positionX + size - i + (size / 2), positionY + (size / 2) + i + (size / 2));
+        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
+        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
       }
       break;
     }
@@ -432,12 +434,12 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
     {
       for (int i = 0; i < size; ++i)
       {
-        img->setPixel(c, positionX + i + (size / 2), positionY + i + (size / 2));  
+        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2));  
       }
-      for (int i = 0; i < (size / 2) - 1; ++i)
+      for (int i = 0; i < (size - 2) / 2; ++i)
       {
-        img->setPixel(c, positionX + size - i + (size / 2), positionY + size + (size / 2));
-        img->setPixel(c, positionX + size + (size / 2), positionY + size - i + (size / 2));
+        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
+        img->setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
       }
       break;
     }
