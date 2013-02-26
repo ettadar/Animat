@@ -21,6 +21,8 @@
 #define SATBLUE 100
 #define VALUEBLUE 100
 
+#define VIEW_DISPLAY_RATIO 2
+
 
 typedef std::vector<int> Image;
 

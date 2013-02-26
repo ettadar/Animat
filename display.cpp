@@ -75,17 +75,20 @@ bool Display::update()
 		SDL_Rect pos;
 		pos.x = 0;
 		pos.y = 10;
-		SDL_Surface* surf = createSurface(VIEW_ANGLE + 1, 10, _screen);
+		SDL_Surface* surf = createSurface((VIEW_ANGLE + 1) * VIEW_DISPLAY_RATIO, 10, _screen);
 		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
 		{
 			for (int j = 0; j < 10; ++j)
 			{
+				int color;
 				if (_targetView->at(i) == BLACK)
-					putpixel(surf, i, j, 0x000000);
+					color = 0x000000;
 				else if (_targetView->at(i) == RED)
-					putpixel(surf, i, j, 0xFF0000);
+					color = 0xFF0000;
 				else if (_targetView->at(i) == BLUE)
-					putpixel(surf, i, j, 0x0000FF);
+					color = 0x0000FF;
+				for (int k = 0; k < VIEW_DISPLAY_RATIO; k++)
+					putpixel(surf, VIEW_DISPLAY_RATIO * i + k, j, color);
 			}
 		}
 		SDL_BlitSurface(surf, NULL, _screen, &pos);
@@ -97,17 +100,20 @@ bool Display::update()
 		SDL_Rect pos;
 		pos.x = 0;
 		pos.y = 0;
-		SDL_Surface* surf = createSurface(VIEW_ANGLE + 1, 10, _screen);
+		SDL_Surface* surf = createSurface((VIEW_ANGLE + 1) * VIEW_DISPLAY_RATIO, 10, _screen);
 		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
 		{
 			for (int j = 0; j < 10; ++j)
 			{
+				int color;
 				if (_robotView->at(i) == BLACK)
-					putpixel(surf, i, j, 0x000000);
+					color = 0x000000;
 				else if (_robotView->at(i) == RED)
-					putpixel(surf, i, j, 0xFF0000);
+					color = 0xFF0000;
 				else if (_robotView->at(i) == BLUE)
-					putpixel(surf, i, j, 0x0000FF);
+					color = 0x0000FF;
+				for (int k = 0; k < VIEW_DISPLAY_RATIO; k++)
+					putpixel(surf, VIEW_DISPLAY_RATIO * i + k, j, color);
 			}
 		}
 		SDL_BlitSurface(surf, NULL, _screen, &pos);
