@@ -104,12 +104,10 @@ void Simulator::setRobotPos(float robotPosX, float robotPosY)
 
 void Simulator::run()
 {
-  int i = 0;
-  while (_continue && !_windowClosed && i < 2)
+  while (_continue && !_windowClosed)
   {
     //usleep(1000000);
     step();
-    i++;
   }
   _continue = true;
   if (_display)
