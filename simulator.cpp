@@ -18,8 +18,8 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :
   _robotPosX(0),
   _robotPosY(0),
   
-  _goalPosX(100),
-  _goalPosY(240),
+  _goalPosX(0),
+  _goalPosY(0),
   
   _cylinderList(NULL),
   
@@ -41,6 +41,14 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :
     bPos = ePos + 1;
     ePos = line.find(' ', bPos);
     _sceneHeight = std::atoi(line.substr(bPos, ePos - bPos).c_str());
+
+    getline(myfile, line);
+    bPos = 0;
+    ePos = line.find(' ');
+    _goalPosX = std::atoi(line.substr(bPos, ePos - bPos).c_str());
+    bPos = ePos + 1;
+    ePos = line.find(' ', bPos);
+    _goalPosY = std::atoi(line.substr(bPos, ePos - bPos).c_str());
     while ( myfile.good() )
     {
       getline(myfile, line);
