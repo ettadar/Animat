@@ -61,7 +61,13 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :
     std::cerr << "Unable to open file " << sceneFile << std::endl;
 
   Image* timg = _getImage(_goalPosX, _goalPosY);
-  CCmodel* mod = new CCmodel(timg);
+  Model* mod = NULL;
+  if (modelNumber == 1)
+    mod = new CCmodel(timg);
+  else if (modelNumber == 2)
+    std::cerr << "Model not implemented!" << std::endl;
+  else
+    mod = new Dynamicmodel(timg);
   _robot = new Robot(mod);
 
   if (display)
