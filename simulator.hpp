@@ -8,6 +8,7 @@
 # include "display.hpp"
 # include "cylinder.hpp"
 # include "model.hpp"
+#include "Image.h"
 
 
 class Simulator
@@ -23,6 +24,7 @@ public:
 
 private:
   Image* _getImage(float posX, float posY);
+  void _drawArrow(short positionX, short positionY, int direction, int size, TGAImage *img);
 
 private:
   Display* _display;

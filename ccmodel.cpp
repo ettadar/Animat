@@ -37,11 +37,11 @@ void CCmodel::computeMove(Image* img)
 	_gapOrLandmarkComputeMove(x, y, iBegin, jBegin, landView);
 	_gapOrLandmarkComputeMove(x, y, abs(iBegin - 1), abs(jBegin - 1), landView);
 
-	_x = x / landView->size();
-	_y = y / landView->size();
+	_x = x / (landView->size() * 2);
+	_y = y / (landView->size() * 2);
 
-	std::cout<<"taille de _x cc model "<<_x<<std::endl;
-	std::cout<<"taille de _y cc model "<<_y<<std::endl;
+	//std::cout<<"taille de _x cc model "<<_x<<std::endl;
+	//std::cout<<"taille de _y cc model "<<_y<<std::endl;
 	delete landView;
 }
 
@@ -58,13 +58,13 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 	Landscape* land = new Landscape();
 	for(int debut = 0; debut < img->size();)
 	{
-		std::cout<<" debut = "<< debut <<std::endl;
+		//std::cout<<" debut = "<< debut <<std::endl;
 		if (img->at(debut) != 0)
 		{int fin = debut;
 			do{
 				fin++;
 			}while(fin < img->size() && img->at(fin) != 0 );
-			std::cout<<" fin = "<< fin <<std::endl;
+			//std::cout<<" fin = "<< fin <<std::endl;
 			LandscapeElem* object = new LandscapeElem(false,
 				((((debut+fin-1)/2) - VIEW_ANGLE / 2)  / 360.) * 2 * PI,
 		    	((float)(fin - debut) / 360) * 2 * PI);
@@ -77,7 +77,7 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 			do{
 				fin++;
 			}while(fin < img->size() && img->at(fin) == 0 );
-			std::cout<<" fin = "<< fin <<std::endl;
+			//std::cout<<" fin = "<< fin <<std::endl;
 			LandscapeElem* object = new LandscapeElem(true,
 				((((debut+fin-1)/2) - VIEW_ANGLE / 2) / 360.) * 2 * PI,
 				((float)(fin - debut) / 360) * 2 * PI);
@@ -85,7 +85,7 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 			debut=fin;
 		}//fin if ==0
 	}//fin du for sur image
-	print(land);
+	//print(land);
 	return land;
 }
 
