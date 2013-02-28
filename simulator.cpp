@@ -101,6 +101,8 @@ void Simulator::setRobotPos(float robotPosX, float robotPosY)
 {
   _robotPosX = robotPosX;
   _robotPosY = robotPosY;
+
+  _knownPos.clear();
 }
 
 void Simulator::run()
@@ -148,7 +150,7 @@ void Simulator::generatePerfImage()
         img->colorPixel(width,height);
       }
 
-      setRobotPos( j * SIZEPIXEL, i * SIZEPIXEL );
+      setRobotPos( j * SIZEPIXEL + (SIZEPIXEL / 2), i * SIZEPIXEL + (SIZEPIXEL / 2) );
       step();
       float moveX = (float)_robot->getMoveX();
       float moveY = (float)_robot->getMoveY();
@@ -181,15 +183,14 @@ void Simulator::step()
   _robotPosY += _robot->getMoveY();
 
 
-  if ((fabs(_robot->getMoveX()) < 0.001 && fabs(_robot->getMoveY()) < 0.001) ||
-    _robotPosX < 0 || _robotPosX >= _sceneWidth ||
+  if (_robotPosX < 0 || _robotPosX >= _sceneWidth ||
     _robotPosY < 0 || _robotPosY >= _sceneHeight ||
-    _knownPos.count(std::pair<float, float>(floor(_robotPosX * 1000) / 1000, floor(_robotPosY * 1000) / 1000)) != 0)
+    _knownPos.count(std::pair<float, float>(floor(_robotPosX * 100) / 100, floor(_robotPosY * 100) / 100)) != 0)
   {
     _continue = false;
   }
 
-  _knownPos.insert(std::pair<float, float>(floor(_robotPosX * 1000) / 1000, floor(_robotPosY * 1000) / 1000));  
+  _knownPos.insert(std::pair<float, float>(floor(_robotPosX * 100) / 100, floor(_robotPosY * 100) / 100));  
 }
 
 // WARNING : Do not handle differant size cylinder
