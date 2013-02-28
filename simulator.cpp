@@ -104,10 +104,12 @@ void Simulator::setRobotPos(float robotPosX, float robotPosY)
 
 void Simulator::run()
 {
-  while (_continue && !_windowClosed)
+  int i = 0;
+  while (_continue && !_windowClosed && i < 1000)
   {
     //usleep(1000000);
     step();
+    i++;
   }
   _continue = true;
   if (_display)
@@ -121,9 +123,9 @@ void Simulator::generatePerfImage()
   TGAImage *img = new TGAImage(_sceneWidth,_sceneHeight);
   short lastWitdth = 0;
   short lastheight = 0;
-  for(int j = 0; j < _sceneWidth / SIZEPIXEL ; j++)
+  for(int j = 0; j < _sceneWidth / SIZEPIXEL; j++)
   {
-    for(int i = 0; i < _sceneHeight / SIZEPIXEL ;i++)
+    for(int i = 0; i < _sceneHeight / SIZEPIXEL; i++)
     {
       setRobotPos( j * 20 + (SIZEPIXEL / 2), i * 20 + (SIZEPIXEL / 2));
       //setRobotPos( 500, 500 );
@@ -175,7 +177,7 @@ void Simulator::generatePerfImage()
       step();
       float moveX = (float)_robot->getMoveX();
       float moveY = (float)_robot->getMoveY();
-      float newSize = sqrt(pow(moveX, 2) + pow(moveY,2)) * (SIZEPIXEL / 2);
+      float newSize = sqrt(pow(moveX, 2) + pow(moveY,2)) * (SIZEPIXEL / 4) + 3;
       //float newSize = 8;
       //float moveX = j * 20 - _sceneWidth / 2;
       //float moveY = i * 20 - _sceneHeight/ 2;
