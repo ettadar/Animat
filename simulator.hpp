@@ -8,8 +8,9 @@
 # include "display.hpp"
 # include "cylinder.hpp"
 # include "model.hpp"
-#include "perfimage.hpp"
+# include "perfimage.hpp"
 
+# include <set>
 
 class Simulator
 {
@@ -43,7 +44,9 @@ private:
 
   bool _continue;
   bool _windowClosed;
+
   int _nbIter;
+  std::set<std::pair<float, float> > _knownPos;
 };
 
 #endif // !SIMULATOR_HPP

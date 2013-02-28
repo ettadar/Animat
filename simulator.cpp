@@ -25,7 +25,8 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :  _d
   
   _continue(true),
   _windowClosed(false),
-  _nbIter(0)
+  _nbIter(0),
+  _knownPos(std::set<std::pair<float, float> >())
 {
   _cylinderList = new std::vector<Cylinder*>();
 
@@ -73,9 +74,9 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :  _d
   if (modelNumber == 1)
     mod = new CCmodel(timg);
   else if (modelNumber == 2)
-    std::cerr << "Model not implemented!" << std::endl;
+    mod = new DynamicModelNoColor(timg);
   else
-    mod = new Dynamicmodel(timg);
+    mod = new DynamicModelColor(timg);
   _robot = new Robot(mod);
 
   if (display)
@@ -104,12 +105,10 @@ void Simulator::setRobotPos(float robotPosX, float robotPosY)
 
 void Simulator::run()
 {
-  int i = 0;
-  while (_continue && !_windowClosed && i < 40)
+  while (_continue && !_windowClosed)
   {
     //usleep(1000000);
     step();
-    i++;
   }
   _continue = true;
   if (_display)
@@ -177,22 +176,20 @@ void Simulator::step()
     _windowClosed = _display->update();
   }
 
-  float PreStepX = _robotPosX;
-  float PreStepY = _robotPosX;
-
   _robot->step(img);
   _robotPosX += _robot->getMoveX();
   _robotPosY += _robot->getMoveY();
 
-  float PostStepX = _robotPosX;
-  float PostStepY = _robotPosX;
 
   if ((fabs(_robot->getMoveX()) < 0.001 && fabs(_robot->getMoveY()) < 0.001) ||
     _robotPosX < 0 || _robotPosX >= _sceneWidth ||
-    _robotPosY < 0 || _robotPosY >= _sceneHeight)
+    _robotPosY < 0 || _robotPosY >= _sceneHeight ||
+    _knownPos.count(std::pair<float, float>(floor(_robotPosX * 1000) / 1000, floor(_robotPosY * 1000) / 1000)) != 0)
   {
     _continue = false;
   }
+
+  _knownPos.insert(std::pair<float, float>(floor(_robotPosX * 1000) / 1000, floor(_robotPosY * 1000) / 1000));  
 }
 
 // WARNING : Do not handle differant size cylinder
