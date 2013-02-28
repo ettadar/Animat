@@ -346,7 +346,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
         img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
@@ -359,7 +359,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
         img->setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
@@ -372,7 +372,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
         img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
@@ -385,7 +385,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
         img->setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
@@ -398,7 +398,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX + (SIZEPIXEL / 2) + i, positionY - size + i + (SIZEPIXEL / 2));
         img->setPixel(c, positionX + (SIZEPIXEL / 2) - i, positionY - size + i + (SIZEPIXEL / 2));
@@ -412,7 +412,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
         img->setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
@@ -425,7 +425,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
         img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
@@ -438,7 +438,7 @@ void Simulator::_drawArrow(short positionX, short positionY, int direction, int 
       {
         img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2));  
       }
-      for (int i = 0; i < (size - 2) / 2; ++i)
+      for (int i = 0; i < SIZE_ARROW; ++i)
       {
         img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
         img->setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
