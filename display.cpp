@@ -73,7 +73,7 @@ bool Display::update()
 	if (_targetView != 0)
 	{
 		SDL_Rect pos;
-		pos.x = 0;
+		pos.x = 20;
 		pos.y = 10;
 		SDL_Surface* surf = createSurface((VIEW_ANGLE + 1) * VIEW_DISPLAY_RATIO, 10, _screen);
 		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
@@ -98,7 +98,7 @@ bool Display::update()
 	if (_robotView != 0)
 	{
 		SDL_Rect pos;
-		pos.x = 0;
+		pos.x = 20;
 		pos.y = 0;
 		SDL_Surface* surf = createSurface((VIEW_ANGLE + 1) * VIEW_DISPLAY_RATIO, 10, _screen);
 		for (int i = 0; i < VIEW_ANGLE + 1; ++i)
