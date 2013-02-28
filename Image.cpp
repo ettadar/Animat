@@ -4,7 +4,8 @@
 #include <stdlib.h>
 
 //Default Constructor
-TGAImage::TGAImage() {
+TGAImage::TGAImage() 
+{
 
 }
 

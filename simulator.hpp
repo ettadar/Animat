@@ -8,7 +8,7 @@
 # include "display.hpp"
 # include "cylinder.hpp"
 # include "model.hpp"
-#include "Image.h"
+#include "perfimage.hpp"
 
 
 class Simulator

@@ -8,10 +8,11 @@
 #define ROBOT_SIZE 40
 #define PI 3.141592653589
 
-#define NB_COLOR 3
+#define NB_COLOR 4
 #define BLACK 0
 #define RED 1
 #define BLUE 2
+#define GREEN 3
 
 #define HUERED 0
 #define SATRED 100

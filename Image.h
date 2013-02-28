@@ -45,7 +45,7 @@ public:
 	short getWidth();
 	short getHeight();
 
-private:
+protected:
 
 	//store the pixels
 	Colour *m_pixels;

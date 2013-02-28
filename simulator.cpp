@@ -120,7 +120,7 @@ void Simulator::run()
 
 void Simulator::generatePerfImage()
 {
-  TGAImage *img = new TGAImage(_sceneWidth,_sceneHeight);
+  Perfimage *img = new Perfimage(_sceneWidth,_sceneHeight);
   short lastWitdth = 0;
   short lastheight = 0;
   //declare a temporary color variable
@@ -140,32 +140,13 @@ void Simulator::generatePerfImage()
       run();
       short width = j * SIZEPIXEL;
       short height = i * SIZEPIXEL;
-      
+
       //draw objectif
-      c.r = 255;
-      c.g = 0;
-      c.b = 0;
-      c.a = 255;
-      for (int g = 0; g < SIZEPIXEL; ++g)
-      {
-        //_drawArrow(_goalPosX,_goalPosY, 0, 10, img);
-        img->setPixel(c,_goalPosX + g, _goalPosY + g);
-      }
+      img->drawGoal(_goalPosX, _goalPosY);
 
       if(fabs(_robotPosX - _goalPosX) < 5 && fabs(_robotPosY - _goalPosY) < 5)
       {
-        //Loop through image and set all pixels to red
-        for(int x = width; x < width + SIZEPIXEL; x++)
-        //int x = j ;
-          for(int y = height; y < height + SIZEPIXEL; y++)
-          {
-            c.r = 20;
-            c.g = 20;
-            c.b = 190;
-            c.a = 255;
-            if(img->getPixel(x, y)->r != 0)
-              img->setPixel(c, x, y);
-          }
+        img->colorPixel(width,height);
       }
 
       setRobotPos( j * SIZEPIXEL, i * SIZEPIXEL );
@@ -173,77 +154,12 @@ void Simulator::generatePerfImage()
       float moveX = (float)_robot->getMoveX();
       float moveY = (float)_robot->getMoveY();
       float newSize = sqrt(pow(moveX, 2) + pow(moveY,2)) * (SIZEPIXEL / 2) ;
-      //float newSize = 8;
-      //float moveX = j * 20 - _sceneWidth / 2;
-      //float moveY = i * 20 - _sceneHeight/ 2;
-      std::cout << "_robotX " << moveX << "_robotY " << moveY << std::endl;
-      if(moveX == 0)
-      {
-        if (moveY == 0)
-        {
-        }
-        else if (moveY > 0)
-        {
-          _drawArrow(width, height, 0, newSize, img);
-        }
-        else if (moveY < 0)
-        {
-          _drawArrow(width, height, 4, newSize, img);
-        }
-      }
-      else if (moveY == 0)
-      {
-        if (moveX > 0)
-        {
-          _drawArrow(width, height, 6, newSize, img);
-        }
-        else
-        {
-          _drawArrow(width, height, 2, newSize, img);
-        }
-      }
-      else if (fabs(moveY / moveX) > 2.42)
-      {
-        if (moveY > 0)
-        {
-          _drawArrow(width, height, 0, newSize, img);
-        }
-        else
-        {
-          _drawArrow(width, height, 4, newSize, img);
-        }
-      }
-      else if (fabs(moveY / moveX) > 0.41)
-      {
-        if (moveY > 0 && moveX > 0)
-        {
-          _drawArrow(width, height, 7, newSize, img);
-        }
-        else if (moveY > 0 && moveX < 0)
-        {
-          _drawArrow(width, height, 1, newSize, img);
-        }
-        else if (moveY < 0 && moveX > 0)
-        {
-          _drawArrow(width, height, 5, newSize, img);
-        }
-        else if (moveY < 0 && moveX < 0)
-        {
-          _drawArrow(width, height, 3, newSize, img);
-        }
-      }
-      else
-      {
-        if(moveX < 0)
-        {
-          _drawArrow(width, height, 2, newSize, img);
-        }
-        else if (moveX > 0)
-        {
-          _drawArrow(width, height, 6, newSize, img);
-        }
-      }
+      img->chooseArrow( width, height, moveX, moveY, newSize);
     }
+  }
+  for (int i = 0; i < _cylinderList->size(); ++i)
+  {
+    img->drawLandmark(_cylinderList->at(i));
   }
   //write the image to disk
   string filename = "./test.tga";
@@ -321,125 +237,3 @@ Image* Simulator::_getImage(float posX, float posY)
   return img;
 }
 
-void Simulator::_drawArrow(short positionX, short positionY, int direction, int size, TGAImage *img)
-{
-//direction : 0 south, 1 south-weast, 2 weast, 3 north-west, 4 north, 5 north-east, 6 east, 7 south-east 
-  
-  std::cout<<"_drawArrow pos X "<<positionX << std::endl;
-  std::cout<<"_drawArrow pos Y "<<positionY << std::endl;
-  //size = 10;
-  Colour c;
-  c.r = 0;
-  c.g = 0;
-  c.b = 0;
-  c.a = 255;
-  switch (direction)
-  {
-    case 0 :
-    {
-      for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-      }
-      break;
-    }
-    case 1 :
-    {
-      for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
-        img->setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-      }
-      break;
-    }
-    case 2 :
-    {
-      for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
-        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
-      }
-      break;
-    }
-    case 3 :
-    {
-    for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
-        img->setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
-      }
-      break;
-    }
-    case 4 :
-    {
-      for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX + (SIZEPIXEL / 2) + i, positionY - size + i + (SIZEPIXEL / 2));
-        img->setPixel(c, positionX + (SIZEPIXEL / 2) - i, positionY - size + i + (SIZEPIXEL / 2));
-      }
-      break;
-    }
-
-    case 5 :
-    {
-    for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
-        img->setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
-      }
-      break;
-    }
-    case 6 :
-    {
-      for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
-        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
-      }
-      break;
-    }
-    case 7 :
-    {
-      for (int i = 0; i < size; ++i)
-      {
-        img->setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2));  
-      }
-      for (int i = 0; i < SIZE_ARROW; ++i)
-      {
-        img->setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
-        img->setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-      }
-      break;
-    }
-  }
-  std::cout<<"_drawArrow fin " << std::endl;
-}
