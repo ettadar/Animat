@@ -1,5 +1,8 @@
 #include "Image.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 //Default Constructor
 TGAImage::TGAImage() {
 
@@ -9,7 +12,8 @@ TGAImage::TGAImage() {
 TGAImage::TGAImage(short width, short height) {
 	m_width = width;
 	m_height = height;
-	m_pixels = new Colour[m_width*m_height];
+	m_pixels = new Colour[m_width * m_height];
+	//m_pixels = (Colour*)malloc(m_width * m_height * sizeof(Colour));
 	//m_pixels = new Colour[0];
 }
 
@@ -25,7 +29,7 @@ void TGAImage::setPixel(Colour inputcolor, int x, int y) {
 
 //Convert 2d array indexing to 1d indexing
 int TGAImage::convert2dto1d(int x, int y) {
-	return m_width * (m_height - y) + x;
+	return m_width * (m_height - 1 - y) + x;
 }
 
 void TGAImage::WriteImage(string filename) {
