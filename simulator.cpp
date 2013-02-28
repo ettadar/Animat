@@ -105,7 +105,7 @@ void Simulator::setRobotPos(float robotPosX, float robotPosY)
 void Simulator::run()
 {
   int i = 0;
-  while (_continue && !_windowClosed && i < 1000)
+  while (_continue && !_windowClosed && i < 40)
   {
     //usleep(1000000);
     step();
@@ -123,6 +123,13 @@ void Simulator::generatePerfImage()
   TGAImage *img = new TGAImage(_sceneWidth,_sceneHeight);
   short lastWitdth = 0;
   short lastheight = 0;
+  //declare a temporary color variable
+  Colour c;
+  c.r = 255;
+  c.g = 255;
+  c.b = 255;
+  c.a = 255;
+  img->setAllPixels(c);
   for(int j = 0; j < _sceneWidth / SIZEPIXEL; j++)
   {
     for(int i = 0; i < _sceneHeight / SIZEPIXEL; i++)
@@ -133,8 +140,7 @@ void Simulator::generatePerfImage()
       run();
       short width = j * SIZEPIXEL;
       short height = i * SIZEPIXEL;
-      //declare a temporary color variable
-      Colour c;
+      
       //draw objectif
       c.r = 255;
       c.g = 0;
@@ -145,6 +151,7 @@ void Simulator::generatePerfImage()
         //_drawArrow(_goalPosX,_goalPosY, 0, 10, img);
         img->setPixel(c,_goalPosX + g, _goalPosY + g);
       }
+
       if(fabs(_robotPosX - _goalPosX) < 5 && fabs(_robotPosY - _goalPosY) < 5)
       {
         //Loop through image and set all pixels to red
@@ -156,28 +163,16 @@ void Simulator::generatePerfImage()
             c.g = 20;
             c.b = 190;
             c.a = 255;
-            img->setPixel(c, x, y);
+            if(img->getPixel(x, y)->r != 0)
+              img->setPixel(c, x, y);
           }
-          lastheight = height;
       }
-      else
-      {
-        for(int x = width; x < width + SIZEPIXEL; x++)
-          for(int y = height; y < height + SIZEPIXEL; y++)
-          {
-            c.r = 255;
-            c.g = 255;
-            c.b = 255;
-            c.a = 255;
-            img->setPixel(c, x, y);
-          }
-          lastheight = height;
-      }
+
       setRobotPos( j * SIZEPIXEL, i * SIZEPIXEL );
       step();
       float moveX = (float)_robot->getMoveX();
       float moveY = (float)_robot->getMoveY();
-      float newSize = sqrt(pow(moveX, 2) + pow(moveY,2)) * (SIZEPIXEL / 4) + 3;
+      float newSize = sqrt(pow(moveX, 2) + pow(moveY,2)) * (SIZEPIXEL / 2) ;
       //float newSize = 8;
       //float moveX = j * 20 - _sceneWidth / 2;
       //float moveY = i * 20 - _sceneHeight/ 2;

@@ -25,6 +25,7 @@
 #define VIEW_DISPLAY_RATIO 2
 
 #define SIZEPIXEL 20
+#define SIZE_ARROW 4
 
 
 

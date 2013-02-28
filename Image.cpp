@@ -22,9 +22,27 @@ void TGAImage::setAllPixels(Colour *pixels) {
 	m_pixels = pixels;
 }
 
+void TGAImage::setAllPixels(Colour& c)
+{
+	for (int i = 0; i < m_width * m_height; ++i)
+	{
+		m_pixels[i].r = c.r;
+		m_pixels[i].g = c.g;
+		m_pixels[i].b = c.b;
+		m_pixels[i].a = c.a;
+	}
+}
+
 //Set indivdual pixels
 void TGAImage::setPixel(Colour inputcolor, int x, int y) {
-	m_pixels[convert2dto1d(x,y)] = inputcolor;
+	int index = convert2dto1d(x,y);
+	if(index < m_width * m_height && index >= 0)
+		m_pixels[convert2dto1d(x,y)] = inputcolor;
+}
+
+Colour* TGAImage::getPixel(int x, int y)
+{
+	return &m_pixels[convert2dto1d(x, y)];
 }
 
 //Convert 2d array indexing to 1d indexing

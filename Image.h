@@ -27,8 +27,13 @@ public:
 	//Set all pixels at once
 	void setAllPixels(Colour *pixels);
 
+	//Set All Pixel color
+	void setAllPixels(Colour& c);
+
 	//set individual pixels
 	void setPixel(Colour inputcolor, int xposition, int yposition);
+
+	Colour* getPixel(int x, int y);
 
 	void WriteImage(string filename);
 
