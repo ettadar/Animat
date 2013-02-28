@@ -2,22 +2,28 @@
 # define DYNAMICMODEL_HPP
 
 #include <vector>
+#include <cstdlib>
+#include <iostream>
+#include <cmath>
 
 #include "type.hpp"
 #include "model.hpp"
 #include "landscape.hpp"
 
 
-class Dynamicmodel : public Model
+class DynamicModel : public Model
 {
 public:
-	Dynamicmodel(Image* goalViewImg);
-	~Dynamicmodel();
+	DynamicModel(Image* goalViewImg);
+	~DynamicModel();
 	void computeMove(Image* img);
 
 protected:
-	Landscape* _imageToLandscape(Image* img);
-	virtual float _getSimilarity(LandscapeElem* e1, LandscapeElem* e2);
+	virtual Landscape* _imageToLandscape(Image* img) = 0;
+	virtual float _getSimilarity(LandscapeElem* e1, LandscapeElem* e2) = 0;
 };
+
+#include "dynamicmodelnocolor.hpp"
+#include "dynamicmodelcolor.hpp"
 
 #endif // !DYNAMICMODEL_HPP
