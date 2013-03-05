@@ -185,12 +185,12 @@ void Simulator::step()
 
   if (_robotPosX < 0 || _robotPosX >= _sceneWidth ||
     _robotPosY < 0 || _robotPosY >= _sceneHeight ||
-    _knownPos.count(std::pair<float, float>(floor(_robotPosX * 100) / 100, floor(_robotPosY * 100) / 100)) != 0)
+    _knownPos.count(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) / KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL)) != 0)
   {
     _continue = false;
   }
 
-  _knownPos.insert(std::pair<float, float>(floor(_robotPosX * 100) / 100, floor(_robotPosY * 100) / 100));  
+  _knownPos.insert(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) / KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL));  
 }
 
 // WARNING : Do not handle differant size cylinder
