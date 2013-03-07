@@ -84,13 +84,14 @@ void DynamicModel::computeMove(Image* img)
 		{
 			if((land->at(j)->center > _goalViewLand->at(i)->center))
 			{
-				_x += -sin(land->at(j)->center);
-				_y += cos(land->at(j)->center);
+				// TODO : add Proportionnal
+				_x += sin(_goalViewLand->at(i)->center);
+				_y += cos(_goalViewLand->at(i)->center);
 			}
 			else if((land->at(j)->center < _goalViewLand->at(i)->center))
 			{
-				_x += sin(land->at(j)->center);
-				_y += -cos(land->at(j)->center);
+				_x += -sin(_goalViewLand->at(i)->center);
+				_y += -cos(_goalViewLand->at(i)->center);
 			}
 			// std::cout << i << " = " << j << std::endl;
 			i--;

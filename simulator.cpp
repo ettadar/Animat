@@ -135,9 +135,9 @@ void Simulator::generatePerfImage()
   {
     for(int i = 0; i < _sceneHeight / SIZEPIXEL; i++)
     {
-      setRobotPos( j * 20 + (SIZEPIXEL / 2), i * 20 + (SIZEPIXEL / 2));
+      setRobotPos( j * SIZEPIXEL + (SIZEPIXEL / 2), i * SIZEPIXEL + (SIZEPIXEL / 2));
       //setRobotPos( 500, 500 );
-      std::cout << "run number" << (j * _sceneHeight / 20) + i  <<std::endl;
+      std::cout << "run number" << (j * _sceneHeight / SIZEPIXEL) + i  <<std::endl;
       run();
       short width = j * SIZEPIXEL;
       short height = i * SIZEPIXEL;
@@ -145,7 +145,7 @@ void Simulator::generatePerfImage()
       //draw objectif
       img->drawGoal(_goalPosX, _goalPosY);
 
-      if(fabs(_robotPosX - _goalPosX) < 5 && fabs(_robotPosY - _goalPosY) < 5)
+      if(fabs(_robotPosX - _goalPosX) < 20 && fabs(_robotPosY - _goalPosY) < 20)
       {
         img->colorPixel(width,height);
       }
@@ -185,12 +185,14 @@ void Simulator::step()
 
   if (_robotPosX < 0 || _robotPosX >= _sceneWidth ||
     _robotPosY < 0 || _robotPosY >= _sceneHeight ||
-    _knownPos.count(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) / KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL)) != 0)
+    _knownPos.count(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) /
+      KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL)) != 0)
   {
     _continue = false;
   }
 
-  _knownPos.insert(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) / KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL));  
+  _knownPos.insert(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) /
+    KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL));  
 }
 
 // WARNING : Do not handle differant size cylinder
@@ -199,7 +201,7 @@ Image* Simulator::_getImage(float posX, float posY)
   Image* img = new Image();
   for (int iPixel = 0; iPixel < VIEW_ANGLE + 1; ++iPixel)
   {
-    float angle = (iPixel - VIEW_ANGLE / 2) / 360. * 2 * PI;
+    float angle = -(iPixel - VIEW_ANGLE / 2) / 360. * 2 * PI;
     float minDist = FLT_MAX;
     int color = BLACK;
 
