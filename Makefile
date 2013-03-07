@@ -1,13 +1,27 @@
 CC=g++
 CFLAGS=-W -Wall -ansi -pedantic
 LDFLAGS=-lSDL -lGL -lGLU -lSDL_image
-EXEC=animat
-SRC= $(wildcard *.cpp)
+SRC= \
+ccmodel.cpp \
+cylinder.hpp \
+display.cpp \
+dynamicmodelcolor.cpp \
+dynamicmodel.cpp \
+dynamicmodelnocolor.cpp \
+Image.cpp \
+perfimage.cpp \
+robot.cpp \
+sdlhelper.cpp \
+simulator.cpp
+
 OBJ= $(SRC:.cpp=.o)
 
-all: $(EXEC)
+all: animat_exp animat_one_run
 
-animat: $(OBJ)
+animat_exp: $(OBJ) main_exp.o
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+animat_one_run: $(OBJ) main_one_run.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
@@ -19,4 +33,4 @@ clean:
 	rm -rf *.o *~
 
 mrproper: clean
-	rm -rf $(EXEC)
+	rm -rf animat_exp animat_one_run
