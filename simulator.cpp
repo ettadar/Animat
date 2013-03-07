@@ -126,6 +126,9 @@ void Simulator::generatePerfImage()
   Perfimage *img = new Perfimage(_sceneWidth,_sceneHeight);
   short lastWitdth = 0;
   short lastheight = 0;
+
+  float countSuccess = 0;
+
   //declare a temporary color variable
   Colour c;
   c.r = 255;
@@ -149,6 +152,7 @@ void Simulator::generatePerfImage()
 
       if(fabs(_robotPosX - _goalPosX) < 20 && fabs(_robotPosY - _goalPosY) < 20)
       {
+        countSuccess++;
         img->colorPixel(width,height);
       }
 
@@ -166,6 +170,9 @@ void Simulator::generatePerfImage()
   }
   //write the image to disk
   img->WriteImage(_imageFile);
+  std::ofstream f(_resultsFile.c_str(), std::ofstream::app);
+  f << countSuccess / (_sceneWidth / SIZEPIXEL * _sceneHeight / SIZEPIXEL) << std::endl;
+  f.close();
 }
 
 void Simulator::step()
