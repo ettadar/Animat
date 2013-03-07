@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <cfloat>
 
-Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :  _display(NULL),
+Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::string imageFile, std::string resultsFile) :  _display(NULL),
   _robot(NULL),
 
   _sceneWidth(0),
@@ -26,7 +26,9 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber) :  _d
   _continue(true),
   _windowClosed(false),
   _nbIter(0),
-  _knownPos(std::set<std::pair<float, float> >())
+  _knownPos(std::set<std::pair<float, float> >()),
+  _imageFile(imageFile),
+  _resultsFile(resultsFile)
 {
   _cylinderList = new std::vector<Cylinder*>();
 
@@ -163,8 +165,7 @@ void Simulator::generatePerfImage()
     img->drawLandmark(_cylinderList->at(i));
   }
   //write the image to disk
-  string filename = "./test.tga";
-  img->WriteImage(filename);
+  img->WriteImage(_imageFile);
 }
 
 void Simulator::step()

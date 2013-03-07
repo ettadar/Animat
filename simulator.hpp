@@ -15,7 +15,7 @@
 class Simulator
 {
 public:
-  Simulator(bool display, std::string sceneFile, int modelNumber);
+  Simulator(bool display, std::string sceneFile, int modelNumber, std::string imageFile="", std::string resultsFile="");
   ~Simulator();
 
   void setRobotPos(float robotPosX, float robotPosY);
@@ -47,6 +47,9 @@ private:
 
   int _nbIter;
   std::set<std::pair<float, float> > _knownPos;
+
+  std::string _imageFile;
+  std::string _resultsFile;
 };
 
 #endif // !SIMULATOR_HPP
