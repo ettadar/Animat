@@ -57,9 +57,11 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::
     bPos = ePos + 1;
     ePos = line.find(' ', bPos);
     _goalPosY = std::atoi(line.substr(bPos, ePos - bPos).c_str());
-    while ( myfile.good() )
+    while (myfile.good())
     {
       getline(myfile, line);
+      if (line == "")
+        continue;
       int bPos = 0;
       int ePos = line.find(' ');
       int c = std::atoi(line.substr(bPos, ePos - bPos).c_str());
@@ -177,6 +179,7 @@ void Simulator::generatePerfImage()
       img->chooseArrow( width, height, moveX, moveY, newSize);
     }
   }
+
   for (uint i = 0; i < _cylinderList->size(); ++i)
   {
     img->drawLandmark(_cylinderList->at(i));
@@ -185,6 +188,7 @@ void Simulator::generatePerfImage()
   img->drawGoal(_goalPosX, _goalPosY);
   //write the image to disk
   img->WriteImage(_imageFile);
+
   std::ofstream f(_resultsFile.c_str(), std::ofstream::app);
   f << countSuccess / (_sceneWidth / SIZEPIXEL * _sceneHeight / SIZEPIXEL) << std::endl;
   f.close();

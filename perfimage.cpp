@@ -55,8 +55,9 @@ void Perfimage::drawLandmark(Cylinder* cyl)
 	{
 		for (int j  = -cyl->r; j < cyl->r; ++j)
 		{
-			if(getPixel(cyl->x + i, cyl->y + j)->r != 0 && cyl->x + i < m_width && cyl->x + i >= 0 && 
-				cyl->y + j < m_height && cyl->y + j >= 0 )
+			if(cyl->x + i < m_width && cyl->x + i >= 0 && 
+				cyl->y + j < m_height && cyl->y + j >= 0 &&
+				getPixel(cyl->x + i, cyl->y + j)->r != 0)
 			{
 				setPixel(c, cyl->x + i, cyl->y + j);			
 			}

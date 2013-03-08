@@ -120,6 +120,9 @@ void DynamicModel::computeMove(Image* img)
 			j--;
 	}
 
-	_x /= nbMatch;
-	_y /= nbMatch;
+	if (nbMatch != 0)
+	{
+		_x /= nbMatch;
+		_y /= nbMatch;
+	}
 }
