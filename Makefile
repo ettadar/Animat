@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-W -Wall -ansi -pedantic
+CFLAGS=-W -Wall -ansi -pedantic -O3
 LDFLAGS=-lSDL -lGL -lGLU -lSDL_image
 SRC= \
 ccmodel.cpp \
@@ -24,8 +24,8 @@ animat_exp: $(OBJ) main_exp.o
 animat_one_run: $(OBJ) main_one_run.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-%.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+.cpp.o:
+	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean mrproper
 

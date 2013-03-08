@@ -22,6 +22,10 @@
 #define SATBLUE 100
 #define VALUEBLUE 100
 
+#define UNKNOWN 0
+#define GOOD 1
+#define BAD 2
+
 
 #define VIEW_DISPLAY_RATIO 2
 
@@ -29,6 +33,7 @@
 #define SIZE_ARROW 4
 
 #define KNOWN_POS_TOL 100
+#define OK_POS_TOL 10
 
 typedef std::vector<int> Image;
 

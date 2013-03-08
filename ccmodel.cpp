@@ -51,7 +51,7 @@ void CCmodel::computeMove(Image* img)
 
 void CCmodel::print(Landscape* land)
 {
-	for(int i = 0; i < land->size(); i++)
+	for(uint i = 0; i < land->size(); i++)
 	{
 		std::cout << "objet numero " << i << " " << *(land->at(i)) << std::endl;
 	}
@@ -63,7 +63,7 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 	int lastPixelColor = img->at(0);
 	int lastObjBegin = 0;
 
-	int i = 0;
+	uint i = 0;
 	for (; i < img->size(); ++i)
 	{
 		if (img->at(i) == lastPixelColor)
@@ -94,10 +94,10 @@ Landscape* CCmodel::_imageToLandscape(Image* img)
 void CCmodel::_gapOrLandmarkComputeMove(float& x, float& y, int iBegin, int jBegin, Landscape* landView)
 {
 
-	int j = jBegin;
+	uint j = jBegin;
 	if (landView->size() > j)
 	{
-		for (int i = iBegin; i < _goalViewLand->size(); i += 2)
+		for (uint i = iBegin; i < _goalViewLand->size(); i += 2)
 		{
 			while(j + 2 < landView->size() && 
 				fabs(_goalViewLand->at(i)->center - landView->at(j)->center) >  

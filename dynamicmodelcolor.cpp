@@ -12,7 +12,7 @@ Landscape* DynamicModelColor::_imageToLandscape(Image* img)
 
 	float begin = 0;
 	int currColor = img->at(0);
-	int i = 0;
+	uint i = 0;
 	for (i = 0; i < img->size(); i++)
 	{
 		if (img->at(i) != currColor)

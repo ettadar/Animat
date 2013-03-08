@@ -3,6 +3,7 @@
 DynamicModel::DynamicModel(Image* goalViewImg) :
 	Model()
 {
+	goalViewImg = goalViewImg;
 }
 	
 DynamicModel::~DynamicModel()
@@ -26,14 +27,14 @@ void DynamicModel::computeMove(Image* img)
 	}
 
 
-	for (int i = 0; i < _goalViewLand->size(); i++)
+	for (uint i = 0; i < _goalViewLand->size(); i++)
 	{
 		lTable.push_back(new std::vector<float>());
 		lTable[i + 1]->push_back(0);
 		pTable.push_back(new std::vector<float>());
 		pTable[i + 1]->push_back(0);
 
-		for (int j = 0; j < land->size(); j++)
+		for (uint j = 0; j < land->size(); j++)
 		{
 			float sim = _getSimilarity(_goalViewLand->at(i), land->at(j));
 			if (lTable[(i - 1) + 1]->at((j - 1) + 1) + sim >= lTable[i + 1]->at((j - 1) + 1) &&

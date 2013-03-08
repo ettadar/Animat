@@ -42,11 +42,14 @@ private:
 
   std::vector<Cylinder*>* _cylinderList;
 
+  bool _success;
   bool _continue;
   bool _windowClosed;
 
   int _nbIter;
   std::set<std::pair<float, float> > _knownPos;
+  std::set<std::pair<int, int> > _currOkPos;
+  std::vector<std::vector<int> > _goodOrBadPos;
 
   std::string _imageFile;
   std::string _resultsFile;

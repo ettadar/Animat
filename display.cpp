@@ -19,7 +19,7 @@ _robotView(0)
 	_cylinderColorList[RED] = IMG_Load("Images/cylinder_red.png");
 	_cylinderColorList[BLUE] = IMG_Load("Images/cylinder_blue.png");
 
-	for (int i = 0; i < cylinderList->size(); i++)
+	for (uint i = 0; i < cylinderList->size(); i++)
 	{
 		SDL_Surface* scaledSurf =
 		scaleSurface(_cylinderColorList[cylinderList->at(i)->color],
@@ -55,7 +55,7 @@ bool Display::update()
 	SDL_FillRect(_screen, NULL, SDL_MapRGB(_screen->format, 255, 255, 255));
 
 	// Draw cylinders
-	for (int i = 0; i < _cylinderToDraw.size(); i++)
+	for (uint i = 0; i < _cylinderToDraw.size(); i++)
 	{
 		SDL_Rect cylinderPos;
 		cylinderPos.x = _cylinderList->at(i)->x - _cylinderList->at(i)->r;
@@ -80,7 +80,7 @@ bool Display::update()
 		{
 			for (int j = 0; j < 10; ++j)
 			{
-				int color;
+				int color = 0;
 				if (_targetView->at(i) == BLACK)
 					color = 0x000000;
 				else if (_targetView->at(i) == RED)
@@ -105,7 +105,7 @@ bool Display::update()
 		{
 			for (int j = 0; j < 10; ++j)
 			{
-				int color;
+				int color = 0;
 				if (_robotView->at(i) == BLACK)
 					color = 0x000000;
 				else if (_robotView->at(i) == RED)

@@ -18,7 +18,7 @@ void Robot::step(Image* view)
 {
 	_model->computeMove(view);
 	_moveX = _model->getMoveX();
-	_moveY = _model->getMoveY();//((float)(rand() % 200 - 100)) / 100.;
+	_moveY = _model->getMoveY();
 }
 
 float Robot::getMoveX()

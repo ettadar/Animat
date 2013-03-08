@@ -23,10 +23,15 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::
   
   _cylinderList(NULL),
   
+  _success(false),
   _continue(true),
   _windowClosed(false),
+
   _nbIter(0),
   _knownPos(std::set<std::pair<float, float> >()),
+  _currOkPos(std::set<std::pair<int, int> >()),
+  _goodOrBadPos(std::vector<std::vector<int> >()),
+
   _imageFile(imageFile),
   _resultsFile(resultsFile)
 {
@@ -81,6 +86,13 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::
     mod = new DynamicModelColor(timg);
   _robot = new Robot(mod);
 
+  for (int i = 0; i < _sceneWidth / OK_POS_TOL; ++i)
+  {
+    _goodOrBadPos.push_back(std::vector<int>());
+    for (int j = 0; j < _sceneHeight / OK_POS_TOL; ++j)
+      _goodOrBadPos[i].push_back(UNKNOWN);
+  }
+
   if (display)
   {
     _display = new Display(_cylinderList, _sceneWidth, _sceneHeight);
@@ -105,27 +117,30 @@ void Simulator::setRobotPos(float robotPosX, float robotPosY)
   _robotPosY = robotPosY;
 
   _knownPos.clear();
+  _currOkPos.clear();
+
+  _success = false;
+  _continue = true;
 }
 
 void Simulator::run()
 {
   while (_continue && !_windowClosed)
   {
-    //usleep(1000000);
     step();
   }
-  _continue = true;
+
   if (_display)
     while (!_windowClosed)
       _windowClosed = _display->update();    
+
+  _continue = true;
   _windowClosed = false;
 }
 
 void Simulator::generatePerfImage()
 {
   Perfimage *img = new Perfimage(_sceneWidth,_sceneHeight);
-  short lastWitdth = 0;
-  short lastheight = 0;
 
   float countSuccess = 0;
 
@@ -150,7 +165,7 @@ void Simulator::generatePerfImage()
       //draw objectif
       img->drawGoal(_goalPosX, _goalPosY);
 
-      if(fabs(_robotPosX - _goalPosX) < 20 && fabs(_robotPosY - _goalPosY) < 20)
+      if (_success)
       {
         countSuccess++;
         img->colorPixel(width,height);
@@ -164,7 +179,7 @@ void Simulator::generatePerfImage()
       img->chooseArrow( width, height, moveX, moveY, newSize);
     }
   }
-  for (int i = 0; i < _cylinderList->size(); ++i)
+  for (uint i = 0; i < _cylinderList->size(); ++i)
   {
     img->drawLandmark(_cylinderList->at(i));
   }
@@ -190,47 +205,62 @@ void Simulator::step()
   _robotPosX += _robot->getMoveX();
   _robotPosY += _robot->getMoveY();
 
-
   if (_robotPosX < 0 || _robotPosX >= _sceneWidth ||
     _robotPosY < 0 || _robotPosY >= _sceneHeight ||
     _knownPos.count(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) /
-      KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL)) != 0)
+      KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL)) != 0 ||
+    _goodOrBadPos[_robotPosX / OK_POS_TOL][_robotPosY / OK_POS_TOL] == BAD)    
   {
     _continue = false;
+    for (std::set<std::pair<int, int> >::iterator it = _currOkPos.begin();
+      it != _currOkPos.end(); it++)
+    {
+      _goodOrBadPos[it->first][it->second] = BAD;
+    }
+  }
+  else if ((fabs(_robotPosX - _goalPosX) < OK_POS_TOL &&
+    fabs(_robotPosY - _goalPosY) < OK_POS_TOL) ||
+    _goodOrBadPos[_robotPosX / OK_POS_TOL][_robotPosY / OK_POS_TOL] == GOOD)
+  {
+    _success = true;
+    _continue = false;
+    for (std::set<std::pair<int, int> >::iterator it = _currOkPos.begin();
+      it != _currOkPos.end(); it++)
+    {
+      _goodOrBadPos[it->first][it->second] = GOOD;
+    }
   }
 
   _knownPos.insert(std::pair<float, float>(floor(_robotPosX * KNOWN_POS_TOL) /
-    KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL));  
+    KNOWN_POS_TOL, floor(_robotPosY * KNOWN_POS_TOL) / KNOWN_POS_TOL));
+  _currOkPos.insert(std::pair<int, int>(_robotPosX / OK_POS_TOL,
+    _robotPosY / OK_POS_TOL));
 }
 
 // WARNING : Do not handle differant size cylinder
 Image* Simulator::_getImage(float posX, float posY)
 {
   Image* img = new Image();
+  int size = _cylinderList->size();
   for (int iPixel = 0; iPixel < VIEW_ANGLE + 1; ++iPixel)
   {
     float angle = -(iPixel - VIEW_ANGLE / 2) / 360. * 2 * PI;
     float minDist = FLT_MAX;
     int color = BLACK;
 
-    for (int iCylinder = 0; iCylinder < _cylinderList->size(); ++iCylinder)
+    for (int iCylinder = 0; iCylinder < size; ++iCylinder)
     {
       float x1 = cos(angle);
       float y1 = sin(angle);
-      x1 /= sqrt(pow(x1, 2) + pow(y1, 2));
-      y1 /= sqrt(pow(x1, 2) + pow(y1, 2));
 
       float x2 = _cylinderList->at(iCylinder)->x - posX;
       float y2 = _cylinderList->at(iCylinder)->y - posY;
-      // std::cout << x2 << ", " << y2 << std::endl;
 
       float prod = x1 * x2 + y1 * y2;
-      // std::cout << "prod : " << prod << std::endl;
       if (prod <= 0)
         continue;
 
       float squareDist = pow(x1 * prod - x2, 2) + pow(y1 * prod - y2, 2);
-      // std::cout << "dist : " << squareDist << std::endl;
       if (squareDist > pow(_cylinderList->at(iCylinder)->r, 2))
         continue;
 
