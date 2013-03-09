@@ -1,17 +1,61 @@
-#include "dynamicmodel.hpp"
+#include "dynamicradial.hpp"
 
-DynamicModel::DynamicModel(Image* goalViewImg) :
-	Model()
+DynamicRadial::DynamicRadial(Image* goalViewImg) :
+	DynamicModel(goalViewImg)
 {
-	goalViewImg = goalViewImg;
-}
-	
-DynamicModel::~DynamicModel()
-{
-
+	_goalViewLand = _imageToLandscape(goalViewImg);
 }
 
-void DynamicModel::computeMove(Image* img)
+Landscape* DynamicRadial::_imageToLandscape(Image* img)
+{
+	Landscape* land = new Landscape();	
+
+	float begin = 0;
+	int currColor = img->at(0);
+	uint i = 0;
+	for (i = 0; i < img->size(); i++)
+	{
+		if (img->at(i) != currColor)
+		{
+			if (currColor == RED)
+			{
+				land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+					(i - begin) / 360. * PI, HUERED, SATRED, VALUERED));
+			}
+			else if (currColor == BLUE)
+			{
+				land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+					(i - begin) / 360. * PI, HUEBLUE, SATBLUE, VALUEBLUE));
+			}
+			begin = i;
+			currColor = img->at(i);
+		}
+	}
+	if (currColor == RED)
+	{
+		land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+			(i - begin) / 360. * PI, HUERED, SATRED, VALUERED));
+	}
+	else if (currColor == BLUE)
+	{
+		land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+			(i - begin) / 360. * PI, HUEBLUE, SATBLUE, VALUEBLUE));
+	}
+
+	return land;
+}
+
+float DynamicRadial::_getSimilarity(LandscapeElem* e1, LandscapeElem* e2)
+{
+	return exp(-pow(fabs(e1->hue - e2->hue) / 5, 2) - 
+		pow(fabs(e1->sat - e2->sat) / 15, 2) -
+		pow(fabs(e1->lum - e2->lum) / 15, 2) -
+		pow(fabs(e1->center - e2->center) / (PI / 2), 2));
+}
+
+
+
+void DynamicRadial::computeMove(Image* img)
 {
 	Landscape* land = _imageToLandscape(img);
 
@@ -56,23 +100,6 @@ void DynamicModel::computeMove(Image* img)
 		}
 	}
 
-	// for (int j = 0; j < land->size(); j++)
-	// {
-	// 	for (int i = 0; i < _goalViewLand->size(); i++)
-	// 	{
-	// 		std::cout << pTable[i + 1]->at(j + 1) << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-	// for (int j = 0; j < land->size(); j++)
-	// {
-	// 	for (int i = 0; i < _goalViewLand->size(); i++)
-	// 	{
-	// 		std::cout << lTable[i + 1]->at(j + 1) << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-
 	_x = 0;
 	_y = 0;
 
@@ -95,6 +122,20 @@ void DynamicModel::computeMove(Image* img)
 				_y += cos(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 			}
 			
+			// //Compute Radial component
+			if(land->size() <= 1)
+			{
+				if(_goalViewLand->at(i)->size > land->at(j)->size)
+				{
+					_x += cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+					_y += -sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+				}
+				else if(_goalViewLand->at(i)->size < land->at(j)->size)
+				{
+					_x += -cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+					_y += sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+				}
+			}
 			// std::cout << i << " = " << j << std::endl;
 			i--;
 			j--;

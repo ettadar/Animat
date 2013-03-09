@@ -84,6 +84,8 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::
     mod = new CCmodel(timg);
   else if (modelNumber == 2)
     mod = new DynamicModelNoColor(timg);
+  else if (modelNumber == 4)
+    mod = new DynamicRadial(timg);
   else
     mod = new DynamicModelColor(timg);
   _robot = new Robot(mod);

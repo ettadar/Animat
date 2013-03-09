@@ -25,5 +25,6 @@ protected:
 
 #include "dynamicmodelnocolor.hpp"
 #include "dynamicmodelcolor.hpp"
+#include "dynamicradial.hpp"
 
 #endif // !DYNAMICMODEL_HPP
