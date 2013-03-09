@@ -32,7 +32,7 @@
 #define SIZEPIXEL 20.0
 #define SIZE_ARROW 4
 
-#define KNOWN_POS_TOL 100
+#define KNOWN_POS_TOL 1000
 #define OK_POS_TOL 10
 
 typedef std::vector<int> Image;
