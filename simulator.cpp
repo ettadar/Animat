@@ -253,11 +253,6 @@ Image* Simulator::_getImage(float posX, float posY)
     {
       float x1 = cos(angle);
       float y1 = sin(angle);
-<<<<<<< HEAD
-=======
-      //x1 /= sqrt(pow(x1, 2) + pow(y1, 2));
-      //y1 /= sqrt(pow(x1, 2) + pow(y1, 2));
->>>>>>> fix goal position
 
       float x2 = _cylinderList->at(iCylinder)->x - posX;
       float y2 = _cylinderList->at(iCylinder)->y - posY;
