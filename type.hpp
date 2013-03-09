@@ -33,7 +33,7 @@
 #define SIZE_ARROW 4
 
 #define KNOWN_POS_TOL 1000
-#define OK_POS_TOL 10
+#define OK_POS_TOL 2
 
 typedef std::vector<int> Image;
 

@@ -84,10 +84,12 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::
     mod = new CCmodel(timg);
   else if (modelNumber == 2)
     mod = new DynamicModelNoColor(timg);
+  else if (modelNumber == 3)
+    mod = new DynamicModelColor(timg);
   else if (modelNumber == 4)
     mod = new DynamicRadial(timg);
   else
-    mod = new DynamicModelColor(timg);
+    std::cerr << "Wrong Model Number!!!" << std::endl;
   _robot = new Robot(mod);
 
   for (int i = 0; i < _sceneWidth / OK_POS_TOL; ++i)
@@ -167,7 +169,7 @@ void Simulator::generatePerfImage()
       short height = i * SIZEPIXEL;
 
       //fix goal position
-      if (_success)
+      if (_success )
       {
         countSuccess++;
         img->colorPixel(width,height);
