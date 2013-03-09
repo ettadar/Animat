@@ -162,9 +162,7 @@ void Simulator::generatePerfImage()
       short width = j * SIZEPIXEL;
       short height = i * SIZEPIXEL;
 
-      //draw objectif
-      img->drawGoal(_goalPosX, _goalPosY);
-
+      //fix goal position
       if (_success)
       {
         countSuccess++;
@@ -183,11 +181,14 @@ void Simulator::generatePerfImage()
   {
     img->drawLandmark(_cylinderList->at(i));
   }
+  //draw objectif
+  img->drawGoal(_goalPosX, _goalPosY);
   //write the image to disk
   img->WriteImage(_imageFile);
   std::ofstream f(_resultsFile.c_str(), std::ofstream::app);
   f << countSuccess / (_sceneWidth / SIZEPIXEL * _sceneHeight / SIZEPIXEL) << std::endl;
   f.close();
+  //fix goal position
 }
 
 void Simulator::step()
@@ -252,6 +253,11 @@ Image* Simulator::_getImage(float posX, float posY)
     {
       float x1 = cos(angle);
       float y1 = sin(angle);
+<<<<<<< HEAD
+=======
+      //x1 /= sqrt(pow(x1, 2) + pow(y1, 2));
+      //y1 /= sqrt(pow(x1, 2) + pow(y1, 2));
+>>>>>>> fix goal position
 
       float x2 = _cylinderList->at(iCylinder)->x - posX;
       float y2 = _cylinderList->at(iCylinder)->y - posY;

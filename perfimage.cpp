@@ -31,9 +31,9 @@ void Perfimage::colorPixel(short width, short height)
 void Perfimage::drawGoal(int goalPosX, int goalPosY)
 {
 	for (int g = 0; g <= SIZEPIXEL / 2; ++g)
-		setPixel(_getColor(255,0,0), goalPosX + (SIZEPIXEL / 4) + g, goalPosY +  (SIZEPIXEL / 4) + g);
+		setPixel(_getColor(255,0,0), goalPosX + (SIZEPIXEL / 4) - g, goalPosY -  (SIZEPIXEL / 4) + g);
 	for (int g = 0; g <= SIZEPIXEL / 2; ++g)
-		setPixel(_getColor(255,0,0), goalPosX + (SIZEPIXEL / 4) + g, goalPosY + 3 * (SIZEPIXEL / 4) - g);
+		setPixel(_getColor(255,0,0), goalPosX + (SIZEPIXEL / 4) - g, goalPosY + (SIZEPIXEL / 4) - g);
 }
 
 void Perfimage::drawLandmark(Cylinder* cyl)

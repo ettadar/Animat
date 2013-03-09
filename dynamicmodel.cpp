@@ -86,14 +86,29 @@ void DynamicModel::computeMove(Image* img)
 			if((land->at(j)->center > _goalViewLand->at(i)->center))
 			{
 				// TODO : add Proportionnal
-				_x += -sin(_goalViewLand->at(i)->center);
-				_y += -cos(_goalViewLand->at(i)->center);
+				_x += -sin(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
+				_y += -cos(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 			}
 			else if((land->at(j)->center < _goalViewLand->at(i)->center))
 			{
-				_x += sin(_goalViewLand->at(i)->center);
-				_y += cos(_goalViewLand->at(i)->center);
+				_x += sin(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
+				_y += cos(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 			}
+			
+			// //Compute Radial component
+			//if(_x == 0 && _y == 0)
+			//{
+				if(_goalViewLand->at(i)->size > land->at(j)->size)
+				{
+					_x += cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+					_y += -sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+				}
+				else if(_goalViewLand->at(i)->size < land->at(j)->size)
+				{
+					_x += -cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+					_y += sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+				}
+			//}
 			// std::cout << i << " = " << j << std::endl;
 			i--;
 			j--;

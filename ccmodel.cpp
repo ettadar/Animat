@@ -117,7 +117,7 @@ void CCmodel::_gapOrLandmarkComputeMove(float& x, float& y, int iBegin, int jBeg
 				x += -sin(_goalViewLand->at(i)->center) * 5 * fabs(_goalViewLand->at(i)->center - landView->at(j)->center);
 				y += -cos(_goalViewLand->at(i)->center) * 5 * fabs(_goalViewLand->at(i)->center - landView->at(j)->center);
 			}
-
+			//Compute Radial component
 			if(_goalViewLand->at(i)->size > landView->at(j)->size)
 			{
 				x += cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
