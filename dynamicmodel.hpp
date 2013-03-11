@@ -26,5 +26,6 @@ protected:
 #include "dynamicmodelnocolor.hpp"
 #include "dynamicmodelcolor.hpp"
 #include "dynamicradial.hpp"
+#include "dynamicradialoneobject.hpp"
 
 #endif // !DYNAMICMODEL_HPP

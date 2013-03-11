@@ -9,6 +9,7 @@ dynamicmodelcolor.cpp \
 dynamicmodel.cpp \
 dynamicmodelnocolor.cpp \
 dynamicradial.cpp \
+dynamicradialoneobject.cpp \
 Image.cpp \
 perfimage.cpp \
 robot.cpp \

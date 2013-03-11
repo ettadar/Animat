@@ -133,8 +133,6 @@ void DynamicRadial::computeMove(Image* img)
 			}
 			
 			// //Compute Radial component
-			if(land->size() <= 1)
-			{
 				if(_goalViewLand->at(i)->size > land->at(j)->size)
 				{
 					_x += cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
@@ -145,7 +143,6 @@ void DynamicRadial::computeMove(Image* img)
 					_x += -cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
 					_y += sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
 				}
-			}
 			// std::cout << i << " = " << j << std::endl;
 			i--;
 			j--;

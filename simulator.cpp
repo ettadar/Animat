@@ -88,6 +88,8 @@ Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::
     mod = new DynamicModelColor(timg);
   else if (modelNumber == 4)
     mod = new DynamicRadial(timg);
+  else if (modelNumber == 5)
+    mod = new DynamicRadialoneobject(timg);
   else
     std::cerr << "Wrong Model Number!!!" << std::endl;
   _robot = new Robot(mod);
