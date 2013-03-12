@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-W -Wall -ansi -pedantic -O3
+CFLAGS=-W -Wall -ansi -pedantic
 LDFLAGS=-lSDL -lGL -lGLU -lSDL_image
 SRC= \
 robot.cpp \

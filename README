@@ -1,3 +1,38 @@
-http://www.sdltutorials.com/sdl-scale-surface
-http://www.libsdl.org/cgi/docwiki.cgi/Pixel_Access
-CC Approach model continusly output a movement vector
+Authors: Thibaut Munzer & Paul Moncuquet
+
+-Animat, UPMC University-
+
+I) Installation
+	You must install this programme.
+	-SDL
+	Only to launch scritp.
+	-Python
+	-Python mathplotlib
+	-python numpy
+
+II)Run
+	If you succed the installation, use your terminal to go in the directory Animat and do "make". At this point you avec 2 executable. "animat_exp" and "animat_one_run".
+
+	Launch "animat_one_run" :
+	Launch whis this command "./animat_one_run ./results/scenePaper <number model> <initial X position> <initial Y position>". Open a window and do a graphique simulation of the model you choose.
+
+	Launch "animat_exp" :
+	Launch whis this command "./animat_exp ./results/scenePaper <number_model> <image.tga> [paper to write % of succed possition]". write in the image.tga the result of the simulation. The blue zone are the initial position of the robot where he arrive to the goal, the white zone are the initial position where the robot didn't succed to return to the goal position. The arrow is the direction of the robot in the current position.
+
+	You can run a script doing experiments whith the command "python script/randomExp.py". This script launch 10 random experience whith different model (1, 2, 3, 4, 5), different number of landmark and different number of landmark's color. if you want some detail, go in the directory "results/results_exp".
+
+III) Other
+
+	List Model:
+	1 : PV model
+	2 : Dynamic model whitout the color matching
+	3 : Dynamic model whith the color matching 
+	4 : Dynamic model whith the color matching and radial component
+	5 : Dynamic model whith the color matching and radial component only if the robot see only one landmark
+	
+	If you want you can make your personale scene, to do this you have to change the file scenePaper in the directory results:
+		1st line : size of the world
+		2nd line : goal position
+		rest of the file : landmark with the format: <color (1 blue, 2 red, 3 green)> <X position> <Y position>
+
+Enjoy ;-)
