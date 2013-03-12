@@ -44,8 +44,8 @@ Display::~Display()
 bool Display::update()
 {
 	SDL_Event event;
-	SDL_WaitEvent(&event);
-	if (event.type == SDL_QUIT)
+	
+	if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
 	{
 		std::cout << "SDL_QUIT" << std::endl;
 		return true;
