@@ -72,7 +72,7 @@ void Perfimage::drawArrow(short width, short height, float moveX, float moveY)
 {
 	int bareSize = 4;
 	int arrowSize = 4;
-	if (moveX != 0. && moveY != 0.)
+	if (moveX != 0. || moveY != 0.)
 	{
 		bresenham(width, height, moveX * bareSize + width, moveY * bareSize + height);
 		float nMoveX = moveX / sqrt(pow(moveX, 2) + pow(moveY, 2));
@@ -80,7 +80,6 @@ void Perfimage::drawArrow(short width, short height, float moveX, float moveY)
 
 		bresenham(moveX * bareSize + width, moveY * bareSize + height, (moveX * bareSize + width) - nMoveY * arrowSize - nMoveX * arrowSize, (moveY * bareSize + height) + nMoveX * arrowSize - nMoveY * arrowSize);
 		bresenham(moveX * bareSize + width, moveY * bareSize + height, (moveX * bareSize + width) + nMoveY * arrowSize - nMoveX * arrowSize, (moveY * bareSize + height) - nMoveX * arrowSize - nMoveY * arrowSize);
-
 	}//fin if move X et move Y = 0
 }
 

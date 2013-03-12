@@ -85,7 +85,6 @@ void DynamicModel::computeMove(Image* img)
 		{
 			if((land->at(j)->center > _goalViewLand->at(i)->center))
 			{
-				// TODO : add Proportionnal
 				_x += -sin(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 				_y += -cos(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 			}
