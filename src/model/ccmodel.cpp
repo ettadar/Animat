@@ -95,15 +95,16 @@ void CCmodel::_gapOrLandmarkComputeMove(float& x, float& y, int iBegin, int jBeg
 				y += -cos(_goalViewLand->at(i)->center) * 5 * fabs(_goalViewLand->at(i)->center - landView->at(j)->center);
 			}
 			//Compute Radial component
+			float radialContribution = 2.5;
 			if(_goalViewLand->at(i)->size > landView->at(j)->size)
 			{
-				x += cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
-				y += -sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
+				x += cos(_goalViewLand->at(i)->center) * radialContribution * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
+				y += -sin(_goalViewLand->at(i)->center) * radialContribution * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
 			}
 			else if(_goalViewLand->at(i)->size < landView->at(j)->size)
 			{
-				x += -cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
-				y += sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
+				x += -cos(_goalViewLand->at(i)->center) * radialContribution * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
+				y += sin(_goalViewLand->at(i)->center) * radialContribution * fabs(_goalViewLand->at(i)->size - landView->at(j)->size);
 			}
 		}
 	}
