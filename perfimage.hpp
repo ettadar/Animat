@@ -14,8 +14,8 @@ public :
 	void colorPixel(short witdth, short height);
 	void drawGoal(int goalPosX, int goalPosY);
 	void drawLandmark(Cylinder* cyl);
-	void chooseArrow(short witdth, short height, float moveX, float moveY, float newSize);
-	void drawArrow(short positionX, short positionY, int direction, int size);
+	void drawArrow(short witdth, short height, float moveX, float moveY);
+	void bresenham(int x1, int y1, int x2, int y2);
 
 private :
 	Colour _getColor(int r, int g, int b, int a=255);

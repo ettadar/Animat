@@ -30,10 +30,12 @@ void Perfimage::colorPixel(short width, short height)
 
 void Perfimage::drawGoal(int goalPosX, int goalPosY)
 {
-	for (int g = 0; g <= SIZEPIXEL / 2; ++g)
-		setPixel(_getColor(255,0,0), goalPosX + (SIZEPIXEL / 4) - g, goalPosY -  (SIZEPIXEL / 4) + g);
-	for (int g = 0; g <= SIZEPIXEL / 2; ++g)
-		setPixel(_getColor(255,0,0), goalPosX + (SIZEPIXEL / 4) - g, goalPosY + (SIZEPIXEL / 4) - g);
+	std::cout << goalPosX << goalPosY << std::endl;
+	for (int g = -SIZEPIXEL / 4; g <= SIZEPIXEL / 4; ++g)
+	{
+		setPixel(_getColor(255,0,0), goalPosX + g, goalPosY + g);
+		setPixel(_getColor(255,0,0), goalPosX + g, goalPosY - g);
+	}
 }
 
 void Perfimage::drawLandmark(Cylinder* cyl)
@@ -57,7 +59,7 @@ void Perfimage::drawLandmark(Cylinder* cyl)
 		{
 			if(cyl->x + i < m_width && cyl->x + i >= 0 && 
 				cyl->y + j < m_height && cyl->y + j >= 0 &&
-				getPixel(cyl->x + i, cyl->y + j)->r != 0)
+				getPixel(cyl->x + i, cyl->y + j)->r != 0 && (pow(i,2) + pow(j,2)) < pow(cyl->r,2))
 			{
 				setPixel(c, cyl->x + i, cyl->y + j);			
 			}
@@ -66,190 +68,81 @@ void Perfimage::drawLandmark(Cylinder* cyl)
 	std::cout <<"x "<<cyl->x <<" y "<<cyl->y <<	std::endl;
 }
 
-void Perfimage::chooseArrow(short width, short height, float moveX, float moveY, float newSize)
+void Perfimage::drawArrow(short width, short height, float moveX, float moveY)
 {
-	if(moveX == 0)
-      {
-        if (moveY == 0)
-        {
-        }
-        else if (moveY > 0)
-        {
-          drawArrow(width, height, 0, newSize);
-        }
-        else if (moveY < 0)
-        {
-          drawArrow(width, height, 4, newSize);
-        }
-      }
-      else if (moveY == 0)
-      {
-        if (moveX > 0)
-        {
-          drawArrow(width, height, 6, newSize);
-        }
-        else
-        {
-          drawArrow(width, height, 2, newSize);
-        }
-      }
-      else if (fabs(moveY / moveX) > 2.42)
-      {
-        if (moveY > 0)
-        {
-          drawArrow(width, height, 0, newSize);
-        }
-        else
-        {
-          drawArrow(width, height, 4, newSize);
-        }
-      }
-      else if (fabs(moveY / moveX) > 0.41)
-      {
-        if (moveY > 0 && moveX > 0)
-        {
-          drawArrow(width, height, 7, newSize);
-        }
-        else if (moveY > 0 && moveX < 0)
-        {
-          drawArrow(width, height, 1, newSize);
-        }
-        else if (moveY < 0 && moveX > 0)
-        {
-          drawArrow(width, height, 5, newSize);
-        }
-        else if (moveY < 0 && moveX < 0)
-        {
-          drawArrow(width, height, 3, newSize);
-        }
-      }
-      else
-      {
-        if(moveX < 0)
-        {
-          drawArrow(width, height, 2, newSize);
-        }
-        else if (moveX > 0)
-        {
-          drawArrow(width, height, 6, newSize);
-        }
-      }
+	int bareSize = 4;
+	int arrowSize = 4;
+	if (moveX != 0. && moveY != 0.)
+	{
+		bresenham(width, height, moveX * bareSize + width, moveY * bareSize + height);
+		float nMoveX = moveX / sqrt(pow(moveX, 2) + pow(moveY, 2));
+		float nMoveY = moveY / sqrt(pow(moveX, 2) + pow(moveY, 2));
+
+		bresenham(moveX * bareSize + width, moveY * bareSize + height, (moveX * bareSize + width) - nMoveY * arrowSize - nMoveX * arrowSize, (moveY * bareSize + height) + nMoveX * arrowSize - nMoveY * arrowSize);
+		bresenham(moveX * bareSize + width, moveY * bareSize + height, (moveX * bareSize + width) + nMoveY * arrowSize - nMoveX * arrowSize, (moveY * bareSize + height) - nMoveX * arrowSize - nMoveY * arrowSize);
+
+	}//fin if move X et move Y = 0
 }
 
-void Perfimage::drawArrow(short positionX, short positionY, int direction, int size)
+void Perfimage::bresenham(int x1, int y1, int x2, int y2)
 {
-	//direction : 0 south, 1 south-weast, 2 weast, 3 north-west, 4 north, 5 north-east, 6 east, 7 south-east 
-  //size = 10;
-	Colour c = _getColor(0,0,0);
-	switch (direction)
-	{
-		case 0 :
-		{
-			for (int i = 0; i < size; ++i)
-			{
-				setPixel(c, positionX + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
-			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-				setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-			}
-			break;
-		}
-		case 1 :
-		{
-			for (int i = 0; i < size; ++i)
-			{
-				setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2)); 
-			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
-				setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-			}
-			break;
-		}
-		case 2 :
-		{
-			for (int i = 0; i < size; ++i)
-			{
-				setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
-			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
-				setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
-			}
-			break;
-		}
-		case 3 :
-		{
-			for (int i = 0; i < size; ++i)
-			{
-				setPixel(c, positionX - i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
-			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX - size + i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
-				setPixel(c, positionX - size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
-			}
-			break;
-		}
-		case 4 :
-		{
-			for (int i = 0; i < size; ++i)
-			{
-				setPixel(c, positionX + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
-			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX + (SIZEPIXEL / 2) + i, positionY - size + i + (SIZEPIXEL / 2));
-				setPixel(c, positionX + (SIZEPIXEL / 2) - i, positionY - size + i + (SIZEPIXEL / 2));
-			}
-			break;
-		}
+	//x1 = width;
+	//x2 = moveX + width;
+	//y1 = height;
+	//y2 = moveY + height;
+	int delta_x(x2 - x1);
+    // if x1 == x2, then it does not matter what we set here
+	signed char const ix((delta_x > 0) - (delta_x < 0));
+	delta_x = (int)std::abs(delta_x) << 1;
 
-		case 5 :
+	int delta_y(y2 - y1);
+    // if y1 == y2, then it does not matter what we set here
+	signed char const iy((delta_y > 0) - (delta_y < 0));
+	delta_y = (int)std::abs(delta_y) << 1;
+
+	setPixel(_getColor(0, 0, 0), x1, y1);
+
+	if (delta_x >= delta_y)
+	{
+        // error may go below zero
+		int error(delta_y - (delta_x >> 1));
+
+		while (x1 != x2)
 		{
-			for (int i = 0; i < size; ++i)
+			if ((error >= 0) && (error || (ix > 0)))
 			{
-				setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY - i + (SIZEPIXEL / 2)); 
+				error -= delta_x;
+				y1 += iy;
 			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY - size + (SIZEPIXEL / 2));
-				setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY - size + i + (SIZEPIXEL / 2));
-			}
-			break;
+            // else do nothing
+
+			error += delta_y;
+			x1 += ix;
+			setPixel(_getColor(0, 0, 0), x1, y1);
 		}
-		case 6 :
+	}
+	else
+	{
+        // error may go below zero
+		int error(delta_x - (delta_y >> 1));
+
+		while (y1 != y2)
 		{
-			for (int i = 0; i < size; ++i)
+			if ((error >= 0) && (error || (iy > 0)))
 			{
-				setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2)); 
+				error -= delta_y;
+				x1 += ix;
 			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) - i);
-				setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + (SIZEPIXEL / 2) + i);
-			}
-			break;
-		}
-		case 7 :
-		{
-			for (int i = 0; i < size; ++i)
-			{
-				setPixel(c, positionX + i + (SIZEPIXEL / 2), positionY + i + (SIZEPIXEL / 2));  
-			}
-			for (int i = 0; i < SIZE_ARROW; ++i)
-			{
-				setPixel(c, positionX + size - i + (SIZEPIXEL / 2), positionY + size + (SIZEPIXEL / 2));
-				setPixel(c, positionX + size + (SIZEPIXEL / 2), positionY + size - i + (SIZEPIXEL / 2));
-			}
-			break;
+            // else do nothing
+
+			error += delta_x;
+			y1 += iy;
+
+			setPixel(_getColor(0, 0, 0), x1, y1);
 		}
 	}
 }
+
 
 Colour Perfimage::_getColor(int r, int g, int b, int a)
 {

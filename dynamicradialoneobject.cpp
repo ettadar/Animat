@@ -1,6 +1,6 @@
 #include "dynamicradialoneobject.hpp"
 
-DynamicRadialoneobject::DynamicRadial(Image* goalViewImg) :
+DynamicRadialoneobject::DynamicRadialoneobject(Image* goalViewImg) :
 	DynamicModel(goalViewImg)
 {
 	_goalViewLand = _imageToLandscape(goalViewImg);
@@ -45,7 +45,7 @@ Landscape* DynamicRadialoneobject::_imageToLandscape(Image* img)
 	return land;
 }
 
-float DynamicRadial::_getSimilarity(LandscapeElem* e1, LandscapeElem* e2)
+float DynamicRadialoneobject::_getSimilarity(LandscapeElem* e1, LandscapeElem* e2)
 {
 	return exp(-pow(fabs(e1->hue - e2->hue) / 5, 2) - 
 		pow(fabs(e1->sat - e2->sat) / 15, 2) -
@@ -55,7 +55,7 @@ float DynamicRadial::_getSimilarity(LandscapeElem* e1, LandscapeElem* e2)
 
 
 
-void DynamicRadial::computeMove(Image* img)
+void DynamicRadialoneobject::computeMove(Image* img)
 {
 	Landscape* land = _imageToLandscape(img);
 

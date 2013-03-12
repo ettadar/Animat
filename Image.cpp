@@ -36,14 +36,18 @@ void TGAImage::setAllPixels(Colour& c)
 
 //Set indivdual pixels
 void TGAImage::setPixel(Colour inputcolor, int x, int y) {
-	int index = convert2dto1d(x,y);
-	if(index < m_width * m_height && index >= 0)
+	if( x >= 0 && y >= 0 && x < m_width && y < m_height)
+	{
 		m_pixels[convert2dto1d(x,y)] = inputcolor;
+	}
 }
 
 Colour* TGAImage::getPixel(int x, int y)
 {
+	if( x >= 0 && y >= 0 && x < m_width && y < m_height)
 	return &m_pixels[convert2dto1d(x, y)];
+	else
+		return &m_pixels[0]; 
 }
 
 //Convert 2d array indexing to 1d indexing

@@ -167,22 +167,21 @@ void Simulator::generatePerfImage()
       //setRobotPos( 500, 500 );
       std::cout << "run number" << (j * _sceneHeight / SIZEPIXEL) + i  <<std::endl;
       run();
-      short width = j * SIZEPIXEL;
-      short height = i * SIZEPIXEL;
+      short width = j * SIZEPIXEL + (SIZEPIXEL / 2);
+      short height = i * SIZEPIXEL + (SIZEPIXEL / 2);
 
       //fix goal position
       if (_success )
       {
         countSuccess++;
-        img->colorPixel(width,height);
+        img->colorPixel(j * SIZEPIXEL, i * SIZEPIXEL);
       }
 
       setRobotPos( j * SIZEPIXEL + (SIZEPIXEL / 2), i * SIZEPIXEL + (SIZEPIXEL / 2) );
       step();
       float moveX = (float)_robot->getMoveX();
       float moveY = (float)_robot->getMoveY();
-      float newSize = sqrt(pow(moveX, 2) + pow(moveY,2)) * (SIZEPIXEL / 2) ;
-      img->chooseArrow( width, height, moveX, moveY, newSize);
+      img->drawArrow( width, height, moveX, moveY);
     }
   }
 
