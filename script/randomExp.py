@@ -3,15 +3,15 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-#params : nbColor nbLandmark sym
-
-MAX_NB_COLOR = 3
-MAX_NB_LANDMARK = 5
+NB_COLORS = [1, 2, 3]
+NB_LANDMARKS = [3, 4, 5]
 NB_RUN_PER_SETUP = 10
-NB_MODEL = 3
-SYM = ["none", "partial", "full"]
+MODELS = [1, 2, 3, 4, 5]
+SYM = ["none"]
 
-SCENE_WIDTH = 800
+DIR_NAME = "results/results_exp"
+
+SCENE_WIDTH = 600
 SCENE_HEIGHT = 600
 
 def createSceneFile(iNbColor, iNbLandmark, sSym, sFilePath):
@@ -45,7 +45,7 @@ def createSceneFile(iNbColor, iNbLandmark, sSym, sFilePath):
 				SCENE_HEIGHT / 2))
 
 def drawRes(mSubRes, oAx):
-	res = oAx.imshow(mSubRes, cmap=plt.cm.jet, interpolation='nearest', vmin=0, vmax=0.5)
+	res = oAx.imshow(mSubRes, cmap=plt.cm.jet, interpolation='nearest', vmin=0, vmax=1)
 
 	width = len(mSubRes)
 	height = len(mSubRes[0])
@@ -60,22 +60,20 @@ def drawRes(mSubRes, oAx):
 	plt.yticks(range(width), alphabet[:width])
 	plt.xticks(range(height), alphabet[:height])
 
-print os.getcwd()
-sDirName = "results_exp_sym"
-if not os.path.exists(sDirName):
-	os.makedirs(sDirName)
+if not os.path.exists(DIR_NAME):
+	os.makedirs(DIR_NAME)
 
 for sSym in SYM:
-	sSymPath = os.path.join(sDirName, "sym_" + sSym)
+	sSymPath = os.path.join(DIR_NAME, "sym_" + sSym)
 	if not os.path.exists(sSymPath):
 		os.makedirs(sSymPath)
 
-	for iNbColor in range(1, MAX_NB_COLOR + 1):
+	for iNbColor in NB_COLORS:
 		sColorPath = os.path.join(sSymPath, "nbColor_" + str(iNbColor))
 		if not os.path.exists(sColorPath):
 			os.makedirs(sColorPath)
 
-		for iNbLandmark in range(1, MAX_NB_LANDMARK + 1):
+		for iNbLandmark in NB_LANDMARKS:
 			sLandmarkPath = os.path.join(sColorPath, "nbLandmark_" + str(iNbLandmark))
 			if not os.path.exists(sLandmarkPath):
 				os.makedirs(sLandmarkPath)
@@ -85,43 +83,49 @@ for sSym in SYM:
 				sSceneFilePath = "%s/run%d.as"%(sLandmarkPath, iRun)
 				if not os.path.isfile(sSceneFilePath):
 					createSceneFile(iNbColor, iNbLandmark, sSym, sSceneFilePath)
-				for iModel in range(NB_MODEL):
+
+				for iModel in MODELS:
 					sImageFilePathTGA = "%s/run%d_model%d.tga"%(sLandmarkPath, iRun, iModel)
 					sImageFilePathPNG = "%s/run%d_model%d.png"%(sLandmarkPath, iRun, iModel)
 					if not os.path.isfile(sImageFilePathTGA) and not os.path.isfile(sImageFilePathPNG):
-						oResFile = open(sDirName + "/res.txt", "a")
+						oResFile = open(DIR_NAME + "/res.txt", "a")
 						oResFile.write("%s %d %d %d %d "%(sSym, iNbColor, iNbLandmark, iRun, iModel))
 						oResFile.close()
-						os.system("./animat_exp %s %d %s results/res.txt > /dev/null"%(sSceneFilePath, iModel + 1, sImageFilePathTGA))
+						os.system("./animat_exp %s %d %s %s/res.txt > /dev/null"%(sSceneFilePath, iModel, sImageFilePathTGA, DIR_NAME))
 					if not os.path.isfile(sImageFilePathPNG):
 						if os.system("convert %s %s"%(sImageFilePathTGA, sImageFilePathPNG)) == 0:
 							os.remove(sImageFilePathTGA)
 
 
 
-mRes = np.zeros((NB_MODEL, len(SYM), MAX_NB_COLOR, MAX_NB_LANDMARK, NB_RUN_PER_SETUP))
-oResFile = open(sDirName + "/res.txt", "r")
+mRes = np.zeros((len(MODELS), len(SYM), len(NB_COLORS), len(NB_LANDMARKS), NB_RUN_PER_SETUP))
+oResFile = open(DIR_NAME + "/res.txt", "r")
 for sLine in oResFile:
 	lLine = sLine.split()
-	lLine[0] = SYM.index(lLine[0])
-	lLine = [float(f) for f in lLine]
-	mRes[lLine[4], lLine[0], lLine[1] - 1, lLine[2] - 1, lLine[3]] += lLine[5]
+	#if len(sLine) == 5:
+	if True:
+		lLine[0] = SYM.index(lLine[0])
+		lLine[1] = NB_COLORS.index(int(lLine[1]))
+		lLine[2] = NB_LANDMARKS.index(int(lLine[2]))
+		lLine[4] = MODELS.index(int(lLine[4]))
+		lLine[5] = float(lLine[5])
+		mRes[lLine[4], lLine[0], lLine[1], lLine[2], float(lLine[3])] += lLine[5]
 
 mRes = np.mean(mRes, axis=4)
 
 fig = plt.figure()
 plt.clf()
 
-drawRes(mRes[0, 0, :, :], fig.add_subplot(331))
-drawRes(mRes[1, 0, :, :], fig.add_subplot(332))
-drawRes(mRes[2, 0, :, :], fig.add_subplot(333))
-drawRes(mRes[0, 1, :, :], fig.add_subplot(334))
-drawRes(mRes[1, 1, :, :], fig.add_subplot(335))
-drawRes(mRes[2, 1, :, :], fig.add_subplot(336))
-drawRes(mRes[0, 2, :, :], fig.add_subplot(337))
-drawRes(mRes[1, 2, :, :], fig.add_subplot(338))
-drawRes(mRes[2, 2, :, :], fig.add_subplot(339))
-
+for i in range(len(MODELS)):
+	for j in range(len(SYM)):
+		print len(SYM) * 100 + len(MODELS) * 10 + i + j
+		ax = fig.add_subplot(len(SYM) * 100 + len(MODELS) * 10 + i + j + 1)
+		drawRes(mRes[i, j, :, :], ax)
+		ax.set_title("model=%d | sym=%s"%(MODELS[i], SYM[j]))
+		ax.set_xlabel('nb landmark')
+		ax.set_xticklabels(NB_LANDMARKS)
+		ax.set_ylabel('nb color')
+		ax.set_yticklabels(NB_COLORS)
 # cax = fig.add_axes([0.9, 0.1, 0.03, 0.8])
 # fig.colorbar(im, cax=cax)
 
