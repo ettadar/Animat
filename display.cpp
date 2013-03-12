@@ -115,7 +115,7 @@ bool Display::update()
 					color = 0xFF0000;
 				else if (_robotView->at(i) == BLUE)
 					color = 0x0000FF;
-				else if (_targetView->at(i) == GREEN)
+				else if (_robotView->at(i) == GREEN)
 					color = 0x00FF00;
 				for (int k = 0; k < VIEW_DISPLAY_RATIO; k++)
 					putpixel(surf, VIEW_DISPLAY_RATIO * i + k, j, color);

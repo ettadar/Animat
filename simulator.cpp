@@ -229,8 +229,8 @@ void Simulator::step()
       _goodOrBadPos[it->first][it->second] = BAD;
     }
   }
-  else if ((fabs(_robotPosX - _goalPosX) < OK_POS_TOL &&
-    fabs(_robotPosY - _goalPosY) < OK_POS_TOL) ||
+  else if ((fabs(_robotPosX - _goalPosX) < OK_POS_TOL * 10 &&
+    fabs(_robotPosY - _goalPosY) < OK_POS_TOL * 10) ||
     _goodOrBadPos[_robotPosX / OK_POS_TOL][_robotPosY / OK_POS_TOL] == GOOD)
   {
     _success = true;

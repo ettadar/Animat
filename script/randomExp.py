@@ -15,27 +15,32 @@ SCENE_WIDTH = 800
 SCENE_HEIGHT = 600
 
 def createSceneFile(iNbColor, iNbLandmark, sSym, sFilePath):
+	oSceneFile = open(sFilePath, 'w')
+	# size map
+	oSceneFile.write("%d %d\n"%(SCENE_WIDTH, SCENE_HEIGHT))
 	if sSym == "none":
-		oSceneFile = open(sFilePath, 'w')
-		oSceneFile.write("%d %d\n"%(SCENE_WIDTH, SCENE_HEIGHT))
-		oSceneFile.write("%d %d\n"%(random.randint(0, SCENE_WIDTH - 1), random.randint(0, SCENE_HEIGHT - 1)))
+		# goal
+		oSceneFile.write("%d %d\n"%(random.randint(0, SCENE_WIDTH / 10 - 1), random.randint(0, SCENE_HEIGHT - 1)))
 		for i in range(iNbLandmark):
+			# landmark
 			oSceneFile.write("%d %d %d\n"%(random.randint(1, iNbColor), random.randint(0, SCENE_WIDTH - 1),
 				random.randint(0, SCENE_HEIGHT - 1)))
 	else:
-		oSceneFile = open(sFilePath, 'w')
-		oSceneFile.write("%d %d\n"%(SCENE_WIDTH, SCENE_HEIGHT))
 		if sSym == "partial":
-			oSceneFile.write("%d %d\n"%(random.randint(0, SCENE_WIDTH - 1), random.randint(0, SCENE_HEIGHT - 1)))
+			# goal
+			oSceneFile.write("%d %d\n"%(random.randint(0, SCENE_WIDTH / 10 - 1), random.randint(0, SCENE_HEIGHT - 1)))
 		else:
-			oSceneFile.write("%d %d\n"%(random.randint(0, SCENE_WIDTH - 1), SCENE_HEIGHT / 2))		
+			# goal
+			oSceneFile.write("%d %d\n"%(random.randint(0, SCENE_WIDTH  / 10 - 1), SCENE_HEIGHT / 2))		
 		for i in range(iNbLandmark / 2):
 			iColor = random.randint(1, iNbColor)
 			fX = random.randint(0, SCENE_WIDTH - 1)
 			fY = random.randint(0, SCENE_HEIGHT / 2 - 1)
+			# landmark
 			oSceneFile.write("%d %d %d\n"%(iColor, fX, fY))
 			oSceneFile.write("%d %d %d\n"%(iColor, fX, fY + SCENE_HEIGHT / 2))
 		if iNbLandmark % 2 == 1:
+			# landmark
 			oSceneFile.write("%d %d %d\n"%(random.randint(1, iNbColor), random.randint(0, SCENE_WIDTH - 1),
 				SCENE_HEIGHT / 2))
 
