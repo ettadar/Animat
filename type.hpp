@@ -22,6 +22,10 @@
 #define SATBLUE 100
 #define VALUEBLUE 100
 
+#define HUEGREEN 120
+#define SATGREEN 100
+#define VALUEGREEN 100
+
 #define UNKNOWN 0
 #define GOOD 1
 #define BAD 2

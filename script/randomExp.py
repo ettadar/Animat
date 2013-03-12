@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 #params : nbColor nbLandmark sym
 
-MAX_NB_COLOR = 2
+MAX_NB_COLOR = 3
 MAX_NB_LANDMARK = 5
 NB_RUN_PER_SETUP = 10
 NB_MODEL = 3

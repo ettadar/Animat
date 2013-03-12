@@ -18,6 +18,7 @@ _robotView(0)
 	_cylinderColorList[BLACK] = IMG_Load("Images/cylinder_black.png");
 	_cylinderColorList[RED] = IMG_Load("Images/cylinder_red.png");
 	_cylinderColorList[BLUE] = IMG_Load("Images/cylinder_blue.png");
+	_cylinderColorList[GREEN] = IMG_Load("Images/cylinder_green.png");
 
 	for (uint i = 0; i < cylinderList->size(); i++)
 	{
@@ -28,7 +29,7 @@ _robotView(0)
 		_cylinderToDraw.push_back(scaledSurf);
 	}
 
-	_robot = scaleSurface(IMG_Load("Images/Bee.jpg"),
+	_robot = scaleSurface(IMG_Load("Images/Bee.png"),
 		ROBOT_SIZE, ROBOT_SIZE);
 		
 	_target = scaleSurface(IMG_Load("Images/target.png"),
@@ -87,6 +88,8 @@ bool Display::update()
 					color = 0xFF0000;
 				else if (_targetView->at(i) == BLUE)
 					color = 0x0000FF;
+				else if (_targetView->at(i) == GREEN)
+					color = 0x00FF00;
 				for (int k = 0; k < VIEW_DISPLAY_RATIO; k++)
 					putpixel(surf, VIEW_DISPLAY_RATIO * i + k, j, color);
 			}
@@ -112,6 +115,8 @@ bool Display::update()
 					color = 0xFF0000;
 				else if (_robotView->at(i) == BLUE)
 					color = 0x0000FF;
+				else if (_targetView->at(i) == GREEN)
+					color = 0x00FF00;
 				for (int k = 0; k < VIEW_DISPLAY_RATIO; k++)
 					putpixel(surf, VIEW_DISPLAY_RATIO * i + k, j, color);
 			}
