@@ -30,7 +30,8 @@
 #define VIEW_DISPLAY_RATIO 2
 
 #define SIZEPIXEL 20.0
-#define SIZE_ARROW 4
+#define SIZE_ARROW 5
+#define SIZE_BARE 10
 
 #define KNOWN_POS_TOL 1000
 #define OK_POS_TOL 2

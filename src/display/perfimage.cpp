@@ -64,16 +64,22 @@ void Perfimage::drawLandmark(Cylinder* cyl)
 
 void Perfimage::drawArrow(short width, short height, float moveX, float moveY)
 {
-	int bareSize = 4;
-	int arrowSize = 4;
+	if (moveX < 0)
+		moveX = -log(-moveX + 1);
+	else
+		moveX = log(moveX + 1);	
+	if (moveY < 0)
+		moveY = -log(-moveY + 1);
+	else
+		moveY = log(moveY + 1);
 	if (moveX != 0. || moveY != 0.)
 	{
-		bresenham(width, height, moveX * bareSize + width, moveY * bareSize + height);
+		bresenham(width, height, moveX * SIZE_BARE + width, moveY * SIZE_BARE + height);
 		float nMoveX = moveX / sqrt(pow(moveX, 2) + pow(moveY, 2));
 		float nMoveY = moveY / sqrt(pow(moveX, 2) + pow(moveY, 2));
 
-		bresenham(moveX * bareSize + width, moveY * bareSize + height, (moveX * bareSize + width) - nMoveY * arrowSize - nMoveX * arrowSize, (moveY * bareSize + height) + nMoveX * arrowSize - nMoveY * arrowSize);
-		bresenham(moveX * bareSize + width, moveY * bareSize + height, (moveX * bareSize + width) + nMoveY * arrowSize - nMoveX * arrowSize, (moveY * bareSize + height) - nMoveX * arrowSize - nMoveY * arrowSize);
+		bresenham(moveX * SIZE_BARE + width, moveY * SIZE_BARE + height, (moveX * SIZE_BARE + width) - nMoveY * SIZE_ARROW - nMoveX * SIZE_ARROW, (moveY * SIZE_BARE + height) + nMoveX * SIZE_ARROW - nMoveY * SIZE_ARROW);
+		bresenham(moveX * SIZE_BARE + width, moveY * SIZE_BARE + height, (moveX * SIZE_BARE + width) + nMoveY * SIZE_ARROW - nMoveX * SIZE_ARROW, (moveY * SIZE_BARE + height) - nMoveX * SIZE_ARROW - nMoveY * SIZE_ARROW);
 	}//fin if move X et move Y = 0
 }
 
