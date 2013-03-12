@@ -1,15 +1,7 @@
 #ifndef DYNAMICMODEL_HPP
 # define DYNAMICMODEL_HPP
 
-#include <vector>
-#include <cstdlib>
-#include <iostream>
-#include <cmath>
-
-#include "type.hpp"
 #include "model.hpp"
-#include "landscape.hpp"
-
 
 class DynamicModel : public Model
 {

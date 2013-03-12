@@ -6,8 +6,8 @@
 
 #include <vector>
 
-#include "type.hpp"
-#include "cylinder.hpp"
+#include "../cylinder.hpp"
+#include "../const.hpp"
 
 class Display
 {

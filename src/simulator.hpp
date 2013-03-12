@@ -2,15 +2,12 @@
 # define SIMULATOR_HPP
 
 # include <vector>
-
-# include "type.hpp"
-# include "robot.hpp"
-# include "display.hpp"
-# include "cylinder.hpp"
-# include "model.hpp"
-# include "perfimage.hpp"
-
+# include <string>
 # include <set>
+
+# include "robot.hpp"
+# include "cylinder.hpp"
+# include "display/display.hpp"
 
 class Simulator
 {
@@ -25,7 +22,6 @@ public:
 
 private:
   Image* _getImage(float posX, float posY);
-  void _drawArrow(short positionX, short positionY, int direction, int size, TGAImage *img);
 
 private:
   Display* _display;

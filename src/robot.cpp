@@ -1,7 +1,5 @@
 #include "robot.hpp"
 
-#include <cstdlib>
-
 Robot::Robot(Model* model)
 {
 	_model = model;

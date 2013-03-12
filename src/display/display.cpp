@@ -47,10 +47,7 @@ bool Display::update()
 	SDL_Event event;
 	
 	if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
-	{
-		std::cout << "SDL_QUIT" << std::endl;
 		return true;
-	}
 
 	// Clear screen
 	SDL_FillRect(_screen, NULL, SDL_MapRGB(_screen->format, 255, 255, 255));

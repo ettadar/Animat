@@ -1,26 +1,22 @@
 #include "perfimage.hpp"
 
-
 #include <cmath>
 
-
+#include "../const.hpp"
 
 Perfimage::Perfimage(short width, short height) : 
 	TGAImage(width, height)
-{
-	
+{	
 }
 
 Perfimage::~Perfimage()
 {
-
 }
 
 void Perfimage::colorPixel(short width, short height)
 {
 	//Loop through image and set all pixels to red
 	for(int x = width; x < width + SIZEPIXEL; x++)
-        //int x = j ;
 		for(int y = height; y < height + SIZEPIXEL; y++)
 		{
 			if(getPixel(x, y)->r != 0)
@@ -30,7 +26,6 @@ void Perfimage::colorPixel(short width, short height)
 
 void Perfimage::drawGoal(int goalPosX, int goalPosY)
 {
-	std::cout << goalPosX << goalPosY << std::endl;
 	for (int g = -SIZEPIXEL / 4; g <= SIZEPIXEL / 4; ++g)
 	{
 		setPixel(_getColor(255,0,0), goalPosX + g, goalPosY + g);
@@ -65,7 +60,6 @@ void Perfimage::drawLandmark(Cylinder* cyl)
 			}
 		}
 	}
-	std::cout <<"x "<<cyl->x <<" y "<<cyl->y <<	std::endl;
 }
 
 void Perfimage::drawArrow(short width, short height, float moveX, float moveY)
@@ -85,17 +79,13 @@ void Perfimage::drawArrow(short width, short height, float moveX, float moveY)
 
 void Perfimage::bresenham(int x1, int y1, int x2, int y2)
 {
-	//x1 = width;
-	//x2 = moveX + width;
-	//y1 = height;
-	//y2 = moveY + height;
 	int delta_x(x2 - x1);
-    // if x1 == x2, then it does not matter what we set here
+	// if x1 == x2, then it does not matter what we set here
 	signed char const ix((delta_x > 0) - (delta_x < 0));
 	delta_x = (int)std::abs(delta_x) << 1;
 
 	int delta_y(y2 - y1);
-    // if y1 == y2, then it does not matter what we set here
+	// if y1 == y2, then it does not matter what we set here
 	signed char const iy((delta_y > 0) - (delta_y < 0));
 	delta_y = (int)std::abs(delta_y) << 1;
 
@@ -103,7 +93,7 @@ void Perfimage::bresenham(int x1, int y1, int x2, int y2)
 
 	if (delta_x >= delta_y)
 	{
-        // error may go below zero
+		// error may go below zero
 		int error(delta_y - (delta_x >> 1));
 
 		while (x1 != x2)
@@ -113,7 +103,7 @@ void Perfimage::bresenham(int x1, int y1, int x2, int y2)
 				error -= delta_x;
 				y1 += iy;
 			}
-            // else do nothing
+			// else do nothing
 
 			error += delta_y;
 			x1 += ix;
@@ -122,7 +112,7 @@ void Perfimage::bresenham(int x1, int y1, int x2, int y2)
 	}
 	else
 	{
-        // error may go below zero
+		// error may go below zero
 		int error(delta_x - (delta_y >> 1));
 
 		while (y1 != y2)
@@ -132,7 +122,7 @@ void Perfimage::bresenham(int x1, int y1, int x2, int y2)
 				error -= delta_y;
 				x1 += ix;
 			}
-            // else do nothing
+			// else do nothing
 
 			error += delta_x;
 			y1 += iy;

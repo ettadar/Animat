@@ -63,8 +63,6 @@ float DynamicRadial::_getSimilarity(LandscapeElem* e1, LandscapeElem* e2)
 		pow(fabs(e1->center - e2->center) / (PI / 2), 2));
 }
 
-
-
 void DynamicRadial::computeMove(Image* img)
 {
 	Landscape* land = _imageToLandscape(img);
@@ -122,7 +120,6 @@ void DynamicRadial::computeMove(Image* img)
 		{
 			if((land->at(j)->center > _goalViewLand->at(i)->center))
 			{
-				// TODO : add Proportionnal
 				_x += -sin(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 				_y += -cos(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 			}
@@ -131,19 +128,17 @@ void DynamicRadial::computeMove(Image* img)
 				_x += sin(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 				_y += cos(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 			}
-			
-			// //Compute Radial component
-				if(_goalViewLand->at(i)->size > land->at(j)->size)
-				{
-					_x += cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
-					_y += -sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
-				}
-				else if(_goalViewLand->at(i)->size < land->at(j)->size)
-				{
-					_x += -cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
-					_y += sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
-				}
-			// std::cout << i << " = " << j << std::endl;
+				//Compute Radial component
+			if(_goalViewLand->at(i)->size > land->at(j)->size)
+			{
+				_x += cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+				_y += -sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+			}
+			else if(_goalViewLand->at(i)->size < land->at(j)->size)
+			{
+				_x += -cos(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+				_y += sin(_goalViewLand->at(i)->center) * 2.5 * fabs(_goalViewLand->at(i)->size - land->at(j)->size);
+			}
 			i--;
 			j--;
 			nbMatch++;

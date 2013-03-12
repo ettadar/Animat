@@ -2,9 +2,7 @@
 # define PERFIMAGE_HPP
 
 #include "Image.h"
-#include "type.hpp"
-#include "cylinder.hpp"
-
+#include "../cylinder.hpp"
 
 class Perfimage : public TGAImage
 {

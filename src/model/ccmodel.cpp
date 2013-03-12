@@ -4,12 +4,6 @@
 #include <iostream>
 #include <cmath>
 
-std::ostream & operator<< (std::ostream &o, LandscapeElem& elem)
-{
-	o << " objet "<< elem.gap << " centre " << elem.center << " taille de l'objet " << elem.size;
-	return o;
-}
-
 CCmodel::CCmodel(Image* goalViewImg) : 
 	Model()
 	 
@@ -19,19 +13,12 @@ CCmodel::CCmodel(Image* goalViewImg) :
 
 CCmodel::~CCmodel()
 {
-
 }
 
 void CCmodel::computeMove(Image* img)
 {
 	Landscape* landView = _imageToLandscape(img);
 
-	// for (int i = 0; i < landView->size(); i++)
-	// 	std::cout << *(landView->at(i)) << std::endl;
-	// std::cout << std::endl;
-	
-	//Tangente component x & y
-	
 	float x = 0;
 	float y = 0;
 	
@@ -44,17 +31,7 @@ void CCmodel::computeMove(Image* img)
 	_x = x / (float)(_goalViewLand->size() * 2);
 	_y = y / (float)(_goalViewLand->size() * 2);
 
-	//std::cout<<"taille de _x cc model "<<_x<<std::endl;
-	//std::cout<<"taille de _y cc model "<<_y<<std::endl;
 	delete landView;
-}
-
-void CCmodel::print(Landscape* land)
-{
-	for(uint i = 0; i < land->size(); i++)
-	{
-		std::cout << "objet numero " << i << " " << *(land->at(i)) << std::endl;
-	}
 }
 
 Landscape* CCmodel::_imageToLandscape(Image* img)

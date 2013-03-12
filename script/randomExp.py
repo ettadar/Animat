@@ -61,7 +61,7 @@ def drawRes(mSubRes, oAx):
 	plt.xticks(range(height), alphabet[:height])
 
 print os.getcwd()
-sDirName = "results"
+sDirName = "results_exp_sym"
 if not os.path.exists(sDirName):
 	os.makedirs(sDirName)
 

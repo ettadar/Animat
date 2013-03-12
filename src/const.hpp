@@ -1,9 +1,6 @@
 #ifndef TYPE_HH
 # define TYPE_HH
 
-#include <iostream>
-
-
 #define VIEW_ANGLE 220
 #define ROBOT_SIZE 40
 #define PI 3.141592653589
@@ -29,7 +26,6 @@
 #define UNKNOWN 0
 #define GOOD 1
 #define BAD 2
-
 
 #define VIEW_DISPLAY_RATIO 2
 

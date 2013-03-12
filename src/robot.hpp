@@ -1,10 +1,7 @@
 #ifndef ROBOT_HPP
 # define ROBOT_HPP
 
-#include <vector>
-
-#include "type.hpp"
-#include "model.hpp"
+#include "model/model.hpp"
 
 class Robot
 {

@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <iostream>
 
 #include "simulator.hpp"
 
@@ -11,5 +12,5 @@ int main(int argc, char** argv)
     delete sim;
     return 0;
   }
-  std::cerr << "Usage = " << argv[0] << " <scene_file> <model_number> <image_file.tga> <results_file>" << std::endl;
+  std::cerr << "Usage = " << argv[0] << " <scene_file> <model_number> <image_file.tga> [<results_file>]" << std::endl;
 }

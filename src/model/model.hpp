@@ -2,10 +2,11 @@
 # define MODEL_HPP
 
 #include <vector>
+#include <cmath>
+#include <cstdlib>
 
-#include "type.hpp"
-#include "type.hpp"
-#include "landscape.hpp"
+#include "../landscape.hpp"
+#include "../const.hpp"
 
 class Model
 {

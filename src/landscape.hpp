@@ -2,7 +2,6 @@
 # define LANDSCAPE_HPP
 
 #include <vector>
-#include <iostream>
 
 struct LandscapeElem
 {
@@ -23,9 +22,5 @@ struct LandscapeElem
 };
 
 typedef std::vector<LandscapeElem*> Landscape;
-
-//friend ostream& operator<< (ostream&, LandscapeElem elem);
-
-
 
 #endif // !LANDSCAPE_HPP

@@ -1,6 +1,5 @@
 #include "simulator.hpp"
 
-
 #include <ctime>
 #include <cmath>
 #include <iostream>
@@ -8,6 +7,10 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <cfloat>
+
+# include "const.hpp"
+# include "model/model.hpp"
+# include "display/perfimage.hpp"
 
 Simulator::Simulator(bool display, std::string sceneFile, int modelNumber, std::string imageFile, std::string resultsFile) :  _display(NULL),
   _robot(NULL),
@@ -194,10 +197,12 @@ void Simulator::generatePerfImage()
   //write the image to disk
   img->WriteImage(_imageFile);
 
-  std::ofstream f(_resultsFile.c_str(), std::ofstream::app);
-  f << countSuccess / (_sceneWidth / SIZEPIXEL * _sceneHeight / SIZEPIXEL) << std::endl;
-  f.close();
-  //fix goal position
+  if (_resultsFile != "")
+  {
+    std::ofstream f(_resultsFile.c_str(), std::ofstream::app);
+    f << countSuccess / (_sceneWidth / SIZEPIXEL * _sceneHeight / SIZEPIXEL) << std::endl;
+    f.close();
+  }
 }
 
 void Simulator::step()

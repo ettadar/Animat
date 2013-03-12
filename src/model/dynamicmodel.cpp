@@ -56,23 +56,6 @@ void DynamicModel::computeMove(Image* img)
 		}
 	}
 
-	// for (int j = 0; j < land->size(); j++)
-	// {
-	// 	for (int i = 0; i < _goalViewLand->size(); i++)
-	// 	{
-	// 		std::cout << pTable[i + 1]->at(j + 1) << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-	// for (int j = 0; j < land->size(); j++)
-	// {
-	// 	for (int i = 0; i < _goalViewLand->size(); i++)
-	// 	{
-	// 		std::cout << lTable[i + 1]->at(j + 1) << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-
 	_x = 0;
 	_y = 0;
 
@@ -94,7 +77,6 @@ void DynamicModel::computeMove(Image* img)
 				_y += cos(_goalViewLand->at(i)->center)* 5 * fabs(_goalViewLand->at(i)->center - land->at(j)->center);
 			}
 			
-			// std::cout << i << " = " << j << std::endl;
 			i--;
 			j--;
 			nbMatch++;

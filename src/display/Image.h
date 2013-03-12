@@ -37,7 +37,7 @@ public:
 
 	void WriteImage(string filename);
 
-//General getters and setters
+	//General getters and setters
 
 	void setWidth(short width);
 	void setHeight(short height);
@@ -55,10 +55,6 @@ protected:
 
 	//convert 2D to 1D indexing
 	int convert2dto1d(int x, int y); 
-
-	
-
 };
-
 
 #endif
