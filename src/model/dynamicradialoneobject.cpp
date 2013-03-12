@@ -27,6 +27,11 @@ Landscape* DynamicRadialoneobject::_imageToLandscape(Image* img)
 				land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
 					(i - begin) / 360. * PI, HUEBLUE, SATBLUE, VALUEBLUE));
 			}
+			else if (currColor == GREEN)
+			{
+				land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+				(i - begin) / 360. * PI, HUEGREEN, SATGREEN, VALUEGREEN));
+			}
 			begin = i;
 			currColor = img->at(i);
 		}
@@ -40,6 +45,11 @@ Landscape* DynamicRadialoneobject::_imageToLandscape(Image* img)
 	{
 		land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
 			(i - begin) / 360. * PI, HUEBLUE, SATBLUE, VALUEBLUE));
+	}
+	else if (currColor == GREEN)
+	{
+		land->push_back(new LandscapeElem(false, (i + begin - 1 - VIEW_ANGLE) / 2. / 360. * PI,
+			(i - begin) / 360. * PI, HUEGREEN, SATGREEN, VALUEGREEN));
 	}
 
 	return land;
