@@ -31,7 +31,7 @@
 
 #define SIZEPIXEL 20.0
 #define SIZE_ARROW 5
-#define SIZE_BARE 10
+#define SIZE_BARE 15
 
 #define KNOWN_POS_TOL 1000
 #define OK_POS_TOL 2
