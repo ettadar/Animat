@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     delete sim;
     return 0;
   }
-  if (argc == 4)
+  else if (argc == 4)
   {
     Simulator* sim = new Simulator(false, std::string(argv[1]), std::atoi(argv[2]),
     	std::string(argv[3]));
