@@ -6,6 +6,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <cstdlib>
+#include <cstring>
 #include <cfloat>
 
 # include "const.hpp"
@@ -197,7 +198,7 @@ void Simulator::generatePerfImage()
   //write the image to disk
   img->WriteImage(_imageFile);
 
-  if (_resultsFile != "")
+  if (strcmp(_resultsFile.c_str(), "") != 0)
   {
     std::ofstream f(_resultsFile.c_str(), std::ofstream::app);
     f << countSuccess / (_sceneWidth / SIZEPIXEL * _sceneHeight / SIZEPIXEL) << std::endl;
