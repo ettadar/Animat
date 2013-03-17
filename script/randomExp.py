@@ -3,16 +3,41 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-NB_COLORS = [1, 2, 3]
-NB_LANDMARKS = [3, 4, 5]
-NB_RUN_PER_SETUP = 10
-MODELS = [1, 2, 3, 4, 5]
-SYM = ["none"]
-
-DIR_NAME = "results/results_exp"
-
 SCENE_WIDTH = 600
 SCENE_HEIGHT = 600
+NB_COLORS = [1, 2, 3]
+NB_LANDMARKS = [1, 2, 3, 4, 5]
+NB_RUN_PER_SETUP = 100
+MODELS = [1, 2, 3]
+SYM = ["none", "partial", "full"]
+
+DIR_NAME = "results/results_exp_sym"
+
+
+
+
+# SCENE_WIDTH = 600
+# SCENE_HEIGHT = 600
+# NB_COLORS = [1, 2, 3]
+# NB_LANDMARKS = [3, 4, 5]
+# NB_RUN_PER_SETUP = 100
+# MODELS = [1, 2, 3, 4, 5]
+# SYM = ["none"]
+
+# DIR_NAME = "results/results_exp_new_models"
+
+
+
+
+# SCENE_WIDTH = 600
+# SCENE_HEIGHT = 600
+# NB_COLORS = [1, 2, 3]
+# NB_LANDMARKS = [3, 4, 5]
+# NB_RUN_PER_SETUP = 20
+# MODELS = [3, 4, 5]
+# SYM = ["none", ...]
+
+# DIR_NAME = "results/results_exp"
 
 def createSceneFile(iNbColor, iNbLandmark, sSym, sFilePath):
 	oSceneFile = open(sFilePath, 'w')
@@ -116,10 +141,14 @@ mRes = np.mean(mRes, axis=4)
 fig = plt.figure()
 plt.clf()
 
+SYM = ["none", "full"]
+
+mRes[:, 1, :, :] = mRes[:, 2, :, :] 
+
 for i in range(len(MODELS)):
 	for j in range(len(SYM)):
 		print len(SYM) * 100 + len(MODELS) * 10 + i + j
-		ax = fig.add_subplot(len(SYM) * 100 + len(MODELS) * 10 + i + j + 1)
+		ax = fig.add_subplot(len(SYM) * 100 + len(MODELS) * 10 + i  + j * len(MODELS) + 1)
 		drawRes(mRes[i, j, :, :], ax)
 		ax.set_title("model=%d | sym=%s"%(MODELS[i], SYM[j]))
 		ax.set_xlabel('nb landmark')
