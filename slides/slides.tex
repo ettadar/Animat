@@ -18,7 +18,7 @@
 \usetheme{Darmstadt}
 
 \title{Animat}
-\subtitle{Using coloured snapshots for short-range guidance in mobile robots}
+\subtitle{Using coloured snapshots for short-range guidance in mobile robots \cite{Gourichon2002}}
 \author{Paul Moncuquet \& Thibaut Munzer}
 
 \begin{document}
@@ -40,63 +40,63 @@
   \frametitle{Problématique}
   \begin{block}{\textit{Homming}}
   \begin{itemize}
-    \item Snapsot du goal
-    \item Près du goal
-    \item Utilisation de données visuelle
-    \item Methode basé sur le matching d'amer    
+    \item \textit{Snapshot} de l'objectif
+    \item Près de l'objectif
+    \item Utilisation de données visuelles
+    \item Méthode basée sur la mise en correspondance d'amers (\textit{matching})   
   \end{itemize}
   \end{block}
 
-  \begin{block}{\textit{Approche Animat}}
+  \begin{block}{Approche Animat}
   \begin{itemize}
     \item Transposition du comportement des abeilles dans un contexte robotique
-    \item angle de vue 220
-    \item Par exemple retour a la base d'alimentation
+    \item Par exemple pour le retour à la base d'alimentation
   \end{itemize}
   \end{block}
 \end{frame}
 
-\subsection{Travaux existant}
+\subsection{Travaux existants}
 
 \begin{frame}
-  \title{Cartwright \& Collett}
-  \begin{block}{Cartwright \& Collett}
+  \begin{block}{Modèle Cartwright \& Collett \cite{Carwright1983}}
     \begin{itemize}
       \item Inspiré des abeille
-      \item Hypothèse : orientation connue
+      \item Hypothèse d'orientation connue
       \item Création d'un pannoramma
-      \item Matching au plus proche
+      \item \textit{Matching} au plus proche (dans le \textit{snapshot})
       \item Calcul des composantes tangentielles et radiales    
       \begin{figure}
         \centering
         \includegraphics[scale=0.2]{cc_model.png}
-        \caption{CC Modèle}
+        \caption{Modèle CC}
       \end{figure}
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}
-  \begin{block}{PV Modèle}
+  \begin{block}{Modèle PV}
     \begin{itemize}
-      \item Proposé par Möller et al. \cite{TODO}
-      \item Contribution de chaque vecteur proportionelle à la différence lors du matching
+      \item Proposé par Möller et al. \cite{Lambrinos2000}
+      \item Contribution de chaque vecteur proportionelle à la différence lors du \textit{matching}
     \end{itemize}
   \end{block}
-  \begin{block}{Gourichon Modèle}
+  \begin{block}{Modèle Gourichon}
     \begin{itemize}
-      \item modèle de l'article étudié
+      \item Modèle de l'article étudié
       \item Basé sur le PV modèle
       \item Hypothèse d'orientation fixe
+      \item Angle de vue limité ($220^{\circ}$)
       \item Amélioration du matching
       \item Utilisation de la couleur 
-      \item suppression de la composante radial
+      \item Suppression de la composante radiale
     \end{itemize}
   \end{block}
 \end{frame}
 
 \section{Matériels, méthodes et résultats}
 
+\subsection{Reproduction des résultats}
 
 \begin{frame}
   Deux expériences dans l'article :
@@ -113,10 +113,7 @@
     \end{figure}
   \end{itemize}
   Reproduction de l'éxpérience virtuelle
-
 \end{frame}
-
-\subsection{Reproduction des résultats}
 
 \begin{frame}
   \begin{block}{Mise en place d'un simulateur}
@@ -135,9 +132,9 @@
 \begin{frame}
   \begin{block}{Calcul de la zone de convergence}
     \begin{itemize}
-      \item Discrétization du monde
+      \item Discrétisation du monde
       \item Problème du cas d'arret
-      \item Optimization du calcul
+      \item Optimisation du calcul
     \end{itemize}
   \end{block}
   \begin{figure}
@@ -150,7 +147,7 @@
 \subsection{Comparaison des résultat}
 
 \begin{frame}
-  \frametitle{PV modèle}
+  \frametitle{Modèle PV}
   \begin{figure}
     \centering
     \includegraphics[scale=0.3]{pv_article.png}
@@ -158,12 +155,12 @@
   \begin{figure}
     \centering
     \includegraphics[scale=0.15]{pv1_res.png}
-    \caption{Comparaison PV modèle}
+    \caption{Comparaison modèle PV}
   \end{figure}  
 \end{frame}
 
 \begin{frame}
-  \frametitle{PV modèle : Contributions modifiées}
+  \frametitle{Modèle PV : Contributions modifiées}
   \begin{figure}
     \centering
     \includegraphics[scale=0.3]{pv_article.png}
@@ -171,12 +168,12 @@
   \begin{figure}
     \centering
     \includegraphics[scale=0.15]{pv2_res.png}
-    \caption{Comparaison PV modèle}
+    \caption{Comparaison modèle PV}
   \end{figure}  
 \end{frame}
 
 \begin{frame}
-  \frametitle{Gournichon modèle sans couleur}
+  \frametitle{Modèle Gourichon sans couleur}
   \begin{figure}
     \centering
     \includegraphics[scale=0.3]{nocolor_article.png}
@@ -184,12 +181,12 @@
   \begin{figure}
     \centering
     \includegraphics[scale=0.15]{nocolor_res.png}
-    \caption{Comparaison Gournichon modèle sans couleur}
+    \caption{Comparaison modèle Gourichon sans couleur}
   \end{figure}  
 \end{frame}
 
 \begin{frame}
-  \frametitle{Gournichon modèle}
+  \frametitle{Modèle Gournichon}
   \begin{figure}
     \centering
     \includegraphics[scale=0.3]{color_article.png}
@@ -197,7 +194,7 @@
   \begin{figure}
     \centering
     \includegraphics[scale=0.15]{color_res.png}
-    \caption{Comparaison Gournichon modèle}
+    \caption{Comparaison modèle Gournichon}
   \end{figure}  
 \end{frame}
 
@@ -206,7 +203,7 @@
 \subsection{Discussion}
 
 \begin{frame}
-  \frametitle{Etude des performances sur un grand nombre de scène}
+  \frametitle{Etude des performances sur un grand nombre de scènes}
   \begin{changemargin}{-1.0cm}{0cm}
   \begin{figure}
     \centering
@@ -216,7 +213,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Etude des performances sur un grand nombre de scène}
+  \frametitle{Etude des performances en ajoutant la composante radiale}
   \begin{changemargin}{-1.0cm}{0cm}
   \begin{figure}
     \centering
@@ -229,12 +226,26 @@
 
 \begin{frame}
   \frametitle{Conclusion}
-  \begin{itemize}
-    \item Lecture et compréhension d'un article
-    \item Reproduction des résultats
-    \item Amélioration du processus de validation du modèle proposé
-    \item Réintégration de la composante radial et amélioration des résultats    
-  \end{itemize}
+  \begin{block}{Retour sur expérience}
+    \begin{itemize}
+      \item Lecture et compréhension d'un article
+      \item Reproduction des résultats
+      \item Amélioration du processus de validation du modèle proposé
+      \item Réintégration de la composante radial et amélioration des résultats    
+    \end{itemize}
+  \end{block}
+  \begin{block}{Ouverture}
+    \begin{itemize}
+      \item Relacher la contrainte d'orientation
+      \item Utilisation de données visuelles en deux dimmensions
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Références}
+  \nocite{*}
+  \bibliographystyle{plain}
+  \bibliography{Animat.bib}
 \end{frame}
 
 \end{document}
